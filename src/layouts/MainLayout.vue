@@ -241,7 +241,8 @@ export default {
   },
   created() {
     this.checkUserLogin().then(() => {});
-    this.socket = io("http://localhost:3002/");
+    this.socket = io("https://whotserver.herokuapp.com");
+    // this.socket = io("http://localhost:3002/");
   }
 };
 </script>
