@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-center">
-    <q-card flat square class="q-mt-sm my-card bg-secondary text-white" style="width: 350px">
+    <q-card class="q-mt-sm q-pa-md my-card" style="width: 350px">
       <q-card-section class="bg-white q-pa-xs">
         <q-btn
           @click="hostGameDialog = true"
@@ -16,7 +16,7 @@
         <q-btn
           icon="refresh"
           round
-          class="bg-white text-primary"
+          class="bg-secondary text-white"
           size="sm"
           unelevated
           @click="refreshOpenGames"
@@ -87,3 +87,9 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+  body {
+    // background-color: red;
+  }
+</style>

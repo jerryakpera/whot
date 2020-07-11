@@ -1,5 +1,5 @@
 <template>
-  <div id="q-app">
+  <div id="q-app" class="mainBody">
     <router-view />
   </div>
 </template>
@@ -9,3 +9,9 @@ export default {
   name: 'App'
 }
 </script>
+
+<style lang="scss" scoped>
+  .mainBody {
+    // background-color: red;
+  }
+</style>

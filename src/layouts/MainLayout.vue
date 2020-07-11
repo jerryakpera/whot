@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout  class="bg-secondary" view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
         <q-toolbar-title>
@@ -12,11 +12,11 @@
           icon="gavel"
           outline
           rounded
-          color="accent"
+          color="secondary"
           label="Rules!"
         />
         <q-btn
-          :color="isLoggedIn ? 'accent' : 'grey'"
+          :color="isLoggedIn ? 'secondary' : 'grey'"
           round
           icon="person"
           size="sm"
@@ -246,3 +246,10 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+  .mainBody {
+    background-color: red;
+    border: 1px solid red;
+  }
+</style>
