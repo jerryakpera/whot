@@ -6,7 +6,6 @@
   "author": "Jeremiah Akpera <jta11developer@gmail.com>",
   "private": true,
   "scripts": {
-    "build": "quasar build",
     "start": "node server.js",
     "heroku-postbuild": "yarn && yarn build"
   },
