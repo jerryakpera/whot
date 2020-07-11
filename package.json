@@ -6,8 +6,7 @@
   "author": "Jeremiah Akpera <jta11developer@gmail.com>",
   "private": true,
   "scripts": {
-    "start": "node server.js",
-    "heroku-postbuild": "yarn && yarn build"
+    "start": "node server.js"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
