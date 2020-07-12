@@ -14,8 +14,15 @@
                 class="bg-grey-10 rounded-borders"
             >
                 <div class="row q-pa-sm no-wrap">
-                    <div class="q-mr-sm" v-for="(player, i) in whotGame.players" :key="player.id">
-                        <playerbox :player="player" :index="i" />
+                    <div 
+                        v-for="(player, i) in whotGame.players" 
+                        class="q-mr-sm" 
+                        :key="player.id"
+                    >
+                        <playerbox
+                            v-if="whotUser.username != player.name" 
+                            :player="player" :index="i" 
+                        />
                     </div>
                 </div>
             </q-scroll-area>
@@ -23,11 +30,11 @@
 
         <q-card-section class="q-pa-sm">
             <div class="row">
-                <div class="col-12 col-sm-6">
+                <div class="col-12 col-sm-5 col-md-3">
                     <gametable />
                 </div>
-                <div class="col-12 col-sm-6">
-                    <div class="text-h2">SOLID</div>
+                <div class="col-12 col-sm-auto">
+                    <playersbox />
                 </div>
             </div>
         </q-card-section>
@@ -39,10 +46,12 @@ import { mapGetters } from "vuex";
 
 export default {
     computed: {
-        ...mapGetters("game", ["whotGame"])
+        ...mapGetters("users", ["whotUser"]),
+        ...mapGetters("game", ["whotGame"]),
     },
     components: {
         playerbox: () => import("../../player/PlayerBox"),
+        playersbox: () => import("../../player/PlayersBox"),
         gametable: () => import("../../Table/GameTable"),
     },
     methods: {

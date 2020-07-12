@@ -325,13 +325,25 @@ const state = {
     },
   ],
   game: {},
-  games: []
+  games: [],
+  colors: [
+    "red",
+    "indigo",
+    "green",
+    "orange",
+    "blue-grey",
+    "blue"
+  ],
+  selectedCards: []
 };
 
 const getters = {
   cards: () => state.fullDeck,
   whotGame: () => state.game,
-  openGames: () => state.games
+  openGames: () => state.games,
+  currentPlayer: () => state.game.players[state.game.currentPlayer],
+  whotColors: () => state.colors,
+  selectedCards: () => state.selectedCards,
 };
 
 const actions = {

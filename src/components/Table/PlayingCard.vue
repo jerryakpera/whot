@@ -1,71 +1,53 @@
 <template>
-  <div style="display: inline-block" class="q-pa-xs">
-    <q-badge
-      v-if="position >= 0"
-      class="badge"
-      style="display: block"
-      color="orange"
-      text-color="black"
-      :label="position + 1"
-    />
-    <div @click="selectCard" class="bg-white cardBox q-ma-xs q-pa-xs">
-      <div style="cursor: pointer; width: 100%" class="card">
-        <div>
-          <div class="no">{{card.no}}</div>
-          <q-badge class="value" text-color="white" :label="card.value" />
-          <div class="shape text-center" :class="card.shape"></div>
-          <div class="text-right bottom">
-            <q-badge class="value value-bottom" text-color="white" :label="card.value" />
-            <div class="num text-right">{{card.no}}</div>
-          </div>
-        </div>
-      </div>
+    <div>
+        <div class="playedCardsBox"></div>
+        <div @click="playCards" class="playingCard bg-white cardBox q-ma-xs q-pa-xs">
+            <div style="cursor: pointer; width: 100%" class="card">
+                <div>
+                    <div class="no">{{whotGame.playingCard.no}}</div>
+                        <q-badge color="primary value" text-color="white" :label="whotGame.playingCard.value" class="cardValue" />
+                        <div class="shape text-center" :class="whotGame.playingCard.shape"></div>
+                        <div class="text-right bottom">
+                        <q-badge color="primary value value-bottom" text-color="white" :label="whotGame.playingCard.value" />
+                        <div class="num text-right">{{whotGame.playingCard.no}}</div>
+                    </div>
+                </div>
+            </div>
+        <q-dialog persistent v-model="showWhotDialog">
+        <whotdialog @closeDialog="showWhotDialog = false" />
+        </q-dialog>
     </div>
-  </div>
+    </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
+
 export default {
-  data: () => ({
-    selected: []
-  }),
-  props: {
-    card: {
-      type: Object,
-      required: true
+    data: () => ({
+        showWhotDialog: false
+    }),
+    computed: {
+        ...mapGetters("game", ["whotGame"])
+    },
+    methods: {
+        playCards() {
+            console.log("Playing cards")
+        }
     }
-  },
-  computed: {
-    ...mapGetters("game", ["selectedCards"]),
-    position() {
-        return this.selectedCards.findIndex(id => this.card.id == id);
-    }
-  },
-  methods: {
-    ...mapActions("games", ["selectACard", "removeCard"]),
-    selectCard() {
-      // Check for the card amongst selected cards
-      const index = this.selectedCards.findIndex(id => id == this.card.id);
-
-      // If the card is found then unselect the card
-      if (index >= 0) {
-        this.removeCard(this.card);
-        return;
-      }
-
-      // IF the card hasnt been selected then add the card to the selected cards
-      this.selectACard(this.card);
-    }
-  },
-  mounted() {}
-};
+}
 </script>
 
 <style lang="scss" scoped>
-.badge {
-  width: 20px;
+.playedCardsBox {
+    width: 100px;
+    height: 30px;
+    border: 1px solid white;
+    border-radius: 5px;
+    margin-top: 14px;
+    margin-left: 4px;
 }
+
 .cardBox {
   width: 100px;
   height: 138px;
@@ -76,6 +58,7 @@ export default {
 
   &:hover {
     box-shadow: 0 2px 4px #333;
+    border: 2px solid #f39237;
   }
 
   &.selected {
@@ -91,13 +74,11 @@ export default {
       }
 
       .value {
-        background-color: brown;
         font-size: 0.6em;
         font-weight: bold;
         margin: 0;
         position: relative;
         top: -8px;
-        text-align: center;
 
         &.value-bottom {
           top: 8px;
@@ -164,12 +145,13 @@ export default {
         border-bottom: 18px solid brown;
         border-left: 25px solid transparent;
         transform: rotate(35deg);
+        // background: grey;
       }
 
       .star:before {
         border-bottom: 25px solid brown;
-        border-left: 10px solid transparent;
-        border-right: 10px solid transparent;
+        border-left: 12px solid transparent;
+        border-right: 12px solid transparent;
         position: absolute;
         height: 0;
         width: 0;

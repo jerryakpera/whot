@@ -1,25 +1,30 @@
 <template>
-    <q-card flat bordered class="my-card bg-dark">
-        <q-card-section>
-            <div class="text-h6">Our Changing Planet</div>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua.
-        </q-card-section>
-
-        <q-separator inset />
-
-        <q-card-section>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua.
-        </q-card-section>
+    <q-card flat bordered class="my-card gameTable bg-dark">
+        <div class="row no-wrap">
+            <market />
+            <playingcard />
+        </div>
     </q-card>
 </template>
 
 <script>
 export default {
-    
+    components: {
+        market: () => import("./Market"),
+        playingcard: () => import("./PlayingCard")
+    }
 }
 </script>
+
+<style lang="scss" scoped>
+.gameTable {
+    width: 230px;
+}
+
+@media screen and (max-width: 380px) {
+  .gameTable {
+    //   width: 100%;
+    //   border: 1px solid red;
+  }
+}
+</style>
