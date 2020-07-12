@@ -113,6 +113,10 @@ export default {
     }
   },
   mounted() {
+    this.socket.on("disconnect", () => {
+      console.log("Client disconnecting")
+    })
+
     // Fetch open games
     this.$root.$on("fetchOpenGames", () => {
       this.socket.emit("fetchOpenGames")
@@ -190,8 +194,7 @@ export default {
     this.socket.on("gameStarting", game => {
       this.updateGame(game)
       .then(() => {
-        // this.$root.$emit("start")
-        alert("Game Starting")
+        this.$root.$emit("startGame")
       })
     })
 

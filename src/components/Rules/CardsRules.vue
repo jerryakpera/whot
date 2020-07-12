@@ -12,6 +12,7 @@ export default {
     cards: [
       {
         id: "0",
+        position: 0,
         no: 1,
         shape: "star",
         value: 2,
@@ -22,6 +23,7 @@ export default {
       },
       {
         id: "5",
+        position: 0,
         no: 2,
         shape: "circle",
         value: 2,
@@ -32,6 +34,7 @@ export default {
       },
       {
         id: "18",
+        position: 0,
         no: 5,
         shape: "triangle",
         value: 5,
@@ -42,6 +45,7 @@ export default {
       },
       {
         id: "30",
+        position: 0,
         no: 8,
         shape: "star",
         value: 16,
@@ -53,6 +57,7 @@ export default {
       },
       {
         id: "45",
+        position: 0,
         no: 14,
         shape: "square",
         value: 14,
@@ -62,6 +67,7 @@ export default {
       },
       {
         id: "49",
+        position: 0,
         no: 20,
         shape: "whot",
         value: 20,

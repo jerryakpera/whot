@@ -15,8 +15,9 @@
       <div class="text-h6">Create a game</div>
     </q-card-section>
     <q-card-section class="q-pa-xs q-ma-xs">
+      <div class="text-caption q-ml-sm text-secondary">Name of game</div>
       <q-input
-        class="q-ma-xs text-white"
+        class="q-ma-xs q-mb-none text-white"
         bg-color="white"
         filled
         v-model="game.name"
@@ -30,7 +31,7 @@
     </q-card-section>
 
     <q-card-section class="q-pa-xs q-ma-xs">
-      <div class="text-subtitle2">No of Players</div>
+      <div class="text-caption q-ml-sm text-secondary">No of players</div>
       <q-btn-toggle
         v-model="game.totalPlayers"
         class="my-custom-toggle"
@@ -49,7 +50,29 @@
         ]"
       />
     </q-card-section>
+
     <q-card-section class="q-pa-xs q-ma-xs">
+      <div class="text-caption q-ml-sm text-secondary">How many cards each</div>
+      <q-btn-toggle
+        v-model="game.noOfCards"
+        class="my-custom-toggle"
+        no-caps
+        rounded
+        unelevated
+        toggle-color="secondary"
+        color="white"
+        text-color="primary"
+        :options="[
+          {label: '3', value: 3},
+          {label: '4', value: 4},
+          {label: '5', value: 5},
+          {label: '6', value: 6},
+          {label: '7', value: 7}
+        ]"
+      />
+    </q-card-section>
+    <q-card-section class="q-pa-xs q-ma-xs">
+      <div class="text-caption q-ml-sm text-secondary">Pick two for mistakes?</div>
       <q-btn-toggle
         v-model="game.mistakes"
         class="my-custom-toggle"
@@ -66,6 +89,7 @@
       />
     </q-card-section>
     <q-card-section class="q-pa-xs q-ma-xs">
+      <div class="text-caption q-ml-sm text-secondary">Winner or highest number out</div>
       <q-btn-toggle
         v-model="game.mode"
         class="my-custom-toggle"
@@ -82,6 +106,7 @@
       />
     </q-card-section>
     <q-card-section class="q-pa-xs q-ma-xs">
+      <div class="text-caption q-ml-sm text-secondary">Game open for anyone to join</div>
       <q-btn-toggle
         v-model="game.private"
         class="my-custom-toggle"
@@ -111,7 +136,8 @@ export default {
       mistakes: true,
       mode: "normal",
       private: false,
-      totalPlayers: 2
+      totalPlayers: 2,
+      noOfCards: 4,
     }
   }),
   methods: {

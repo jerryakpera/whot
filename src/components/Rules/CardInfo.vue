@@ -26,7 +26,7 @@ export default {
     }
   },
   components: {
-    whotcard: () => import("../Game/WhotCard")
+    whotcard: () => import("../Game/WhotCardRules")
   }
 };
 </script>

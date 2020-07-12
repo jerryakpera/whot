@@ -49,6 +49,15 @@
     <q-dialog persistent v-model="privateGameDialog">
       <privategame />
     </q-dialog>
+    <q-dialog
+      v-model="gameDialog"
+      persistent
+      maximized
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <gamedialog />
+    </q-dialog>
   </div>
 </template>
 
@@ -57,6 +66,7 @@ import { mapGetters } from "vuex";
 
 export default {
   data: () => ({
+    gameDialog: false,
     hostGameDialog: false,
     gameWaitingDialog: false,
     privateGameDialog: false,
@@ -74,6 +84,7 @@ export default {
     hostgame: () => import("../components/Game/HostGame"),
     gamewaiting: () => import("../components/Dialogs/Game/GameWaiting"),
     privategame: () => import("../components/Dialogs/Game/PrivateGame"),
+    gamedialog: () => import("../components/Dialogs/Game/GameDialog"),
   },
   created() {
     this.$root.$on("showGameWaitingDialog", () => {
@@ -84,6 +95,10 @@ export default {
     this.$root.$on("closeGameWaitingDialog", () => {
       this.gameWaitingDialog = false;
     });
+
+    this.$root.$on("startGame", () => {
+      this.gameDialog = true
+    })
   }
 };
 </script>
