@@ -344,6 +344,8 @@ const getters = {
   currentPlayer: () => state.game.players[state.game.currentPlayer],
   whotColors: () => state.colors,
   selectedCards: () => state.selectedCards,
+  lastPlayedCards: () => state.game.lastPlayedCards,
+  playerShouts: () => state.game.shouts
 };
 
 const actions = {
@@ -377,6 +379,9 @@ const actions = {
       commit("removeCard", card)
       resolve()
     })
+  },
+  setShout({commit}, shoutType) {
+    commit("setShout", shoutType)
   }
 };
 
@@ -406,6 +411,22 @@ const mutations = {
   },
   clearSelectedCards(state) {
     state.selectedCards = []
+  },
+  setShout(state, shoutType) {
+    const currentPlayer = state.game.players[state.game.currentPlayer]
+    
+    const shoutIndex = state.game.shouts.findIndex(shout => shout.player === currentPlayer.name)
+    const shout = {
+      player: currentPlayer.name,
+      type: shoutType
+    }
+
+    console.log(shoutIndex, state.game.shouts)
+    if (shoutIndex >= 0) {
+      state.game.shouts[shoutIndex] = shout
+    } else {
+      state.game.shouts.push(shout)
+    }
   }
 };
 

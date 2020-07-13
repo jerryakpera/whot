@@ -43,6 +43,7 @@
             <div class="row">
                 <div class="col-12 col-sm-5 col-md-3">
                     <gametable />
+                    <!-- <powerbutton /> -->
                 </div>
                 <div v-for="player in whotGame.players" :key="player.id" class="col-12 col-sm-auto">
                     <div v-if="whotUser.username == player.name">
@@ -69,6 +70,7 @@ export default {
         playerbox: () => import("../../player/PlayerBox"),
         playersbox: () => import("../../player/PlayersBox"),
         gametable: () => import("../../Table/GameTable"),
+        powerbutton: () => import("../../Table/PowerButton"),
     },
     methods: {
         leaveGame () {

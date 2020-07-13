@@ -2,7 +2,14 @@
     <q-card flat bordered class="my-card gameTable bg-dark">
         <div class="row no-wrap">
             <market />
-            <playingcard />
+            <div class="row">
+                <div class="col-12">
+                    <lastplayedcards />
+                </div>
+                <div class="col-12">
+                    <playingcard />
+                </div>
+            </div>
         </div>
     </q-card>
 </template>
@@ -11,7 +18,8 @@
 export default {
     components: {
         market: () => import("./Market"),
-        playingcard: () => import("./PlayingCard")
+        playingcard: () => import("./PlayingCard"),
+        lastplayedcards: () => import("./LastPlayedCards"),
     }
 }
 </script>

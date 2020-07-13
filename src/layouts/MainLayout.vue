@@ -114,6 +114,13 @@ export default {
     },
     checkTurn() {
       return this.whotGame.players[this.whotGame.currentPlayer].name === this.whotUser.username
+    },
+    showNotif (message) {
+      this.$q.notify({
+        message: message,
+        color: 'dark',
+        timeout: 1500
+      })
     }
   },
   mounted() {
@@ -235,6 +242,7 @@ export default {
       this.updateGame(game)
       .then(() => {
         this.$root.$emit("refreshGameBoard")
+        this.showNotif(game.lastMove)
       })
     })
 
@@ -266,13 +274,16 @@ export default {
     this.$root.$on("playCards", () => {
       if (!this.checkTurn()) return
 
-      console.log(0, this.selectedCards)
       const data = {
         game: this.whotGame,
         selectedCards: this.selectedCards
       }
 
       this.socket.emit("playCards", data)
+    })
+
+    this.$root.$on("refreshGame", () => {
+        this.$root.$emit("refreshGameBoard")
     })
   },
   created() {

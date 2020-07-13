@@ -1,6 +1,6 @@
 <template>
-    <div :key="componentKey">
-      <div class="playedCardsBox"></div>
+    <div style="display: block" :key="componentKey">
+      <!-- <div class="playedCardsBox"></div> -->
         <div @click="playCards" class="playingCard bg-white cardBox q-ma-xs q-pa-xs">
           <div style="cursor: pointer; width: 100%" class="card">
             <div>
@@ -35,6 +35,8 @@ export default {
     playCards() {
       this.$root.$emit("playCards")
     }
+  },
+  components: {
   },
   mounted() {
     this.$root.$on("refreshGameBoard", () => {
