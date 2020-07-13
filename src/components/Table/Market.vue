@@ -1,5 +1,5 @@
 <template>
-    <div class="q-pa-sm">
+    <div :key="componentKey" class="q-pa-sm">
         <q-chip square class="marketNo">
             <q-avatar color="primary" text-color="white">{{whotGame.market.length}}</q-avatar>Market
         </q-chip>
@@ -11,13 +11,21 @@
 import { mapGetters } from "vuex";
 
 export default {
+    data: () => ({
+        componentKey: 0
+    }),
     computed: {
-        ...mapGetters("game", ["whotGame"])
+        ...mapGetters("game", ["whotGame", "currentPlayer"])
     },
     methods: {
         pickMarket() {
-            console.log("Picking market!")
+            this.$root.$emit("pickMarket")
         }
+    },
+    mounted() {
+        this.$root.$on("refreshGameBoard", () => {
+            this.componentKey ++
+        })
     }
 }
 </script>

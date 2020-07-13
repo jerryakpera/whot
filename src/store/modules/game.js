@@ -351,6 +351,7 @@ const actions = {
     commit
   }, game) {
     return new Promise((resolve, reject) => {
+      commit("clearSelectedCards")
       commit("updateGame", game)
       resolve()
     })
@@ -358,6 +359,22 @@ const actions = {
   updateGamesList({commit}, games) {
     return new Promise((resolve, reject) => {
       commit("updateGamesList", games)
+      resolve()
+    })
+  },
+  selectACard({
+    commit
+  }, card) {
+    return new Promise((resolve, reject) => {
+      commit("selectCard", card)
+      resolve()
+    })
+  },
+  removeCard({
+    commit
+  }, card) {
+    return new Promise((resolve, reject) => {
+      commit("removeCard", card)
       resolve()
     })
   }
@@ -369,6 +386,26 @@ const mutations = {
   },
   updateGamesList(state, games) {
     state.games = [ ...games ]
+  },
+  selectCard(state, card) {
+    if (state.selectedCards.length == 0) {
+      state.selectedCards.push(card.id)
+      return
+    } else {
+      let firstCard = state.fullDeck.filter(deckCard => deckCard.id === state.selectedCards[0])[0]
+
+      const newCard = state.fullDeck.filter(deckCard => deckCard.id === card.id)[0]
+      if (firstCard.no === newCard.no) {
+        state.selectedCards.push(card.id)
+      }
+    }
+  },
+  removeCard(state, card) {
+    const index = state.selectedCards.findIndex(id => card.id == id)
+    state.selectedCards.splice(index, 1)
+  },
+  clearSelectedCards(state) {
+    state.selectedCards = []
   }
 };
 

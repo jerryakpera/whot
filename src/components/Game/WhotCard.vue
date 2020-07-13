@@ -1,14 +1,14 @@
 <template>
   <div style="display: inline-block" class="q-pa-xs">
     <q-badge
-      v-if="position >= 0"
+      v-show="position >= 0"
       class="badge"
       style="display: block"
       color="orange"
       text-color="black"
       :label="position + 1"
     />
-    <div @click="selectCard" class="bg-white cardBox q-ma-xs q-pa-xs">
+    <div @click="selectCard" class="bg-white cardBox q-ma-xs q-pa-xs" :class="selectedCards.includes(card.id) ? 'selected' : ''">
       <div style="cursor: pointer; width: 100%" class="card">
         <div>
           <div class="no">{{card.no}}</div>
@@ -39,11 +39,11 @@ export default {
   computed: {
     ...mapGetters("game", ["selectedCards"]),
     position() {
-        return this.selectedCards.findIndex(id => this.card.id == id);
+      return this.selectedCards.findIndex(id => this.card.id == id);
     }
   },
   methods: {
-    ...mapActions("games", ["selectACard", "removeCard"]),
+    ...mapActions("game", ["selectACard", "removeCard"]),
     selectCard() {
       // Check for the card amongst selected cards
       const index = this.selectedCards.findIndex(id => id == this.card.id);

@@ -1,5 +1,5 @@
 <template>
-    <q-card style="width: 120px" dark bordered class="bg-grey-9 my-card">
+    <q-card :key="componentKey" style="width: 120px" dark bordered class="bg-grey-9 my-card">
         <q-card-section class="q-pa-none">
             <q-chip size="sm" square>
                 <q-avatar :color="colors[index]" text-color="white">
@@ -18,7 +18,8 @@
             <q-avatar size="sm" :color="colors[index]" text-color="white">
                 {{player.name.substring(0, 1)}}
             </q-avatar>
-            <q-chip 
+            <q-chip
+                v-if="player.shouts.length > 0"
                 size="sm" 
                 color="deep-orange" text-color="white" 
                 icon="campaign"
@@ -39,7 +40,8 @@ export default {
             "orange",
             "blue-grey",
             "blue"
-        ]
+        ],
+        componentKey: 0
     }),
     props: {
         player: {
@@ -53,6 +55,11 @@ export default {
     },
     components: {
         whotback: () => import("../Game/WhotBack")
+    },
+    mounted() {
+        this.$root.$on("refreshGameBoard", () => {
+            this.componentKey ++
+        })
     }
 }
 </script>

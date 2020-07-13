@@ -11,6 +11,10 @@ function decryptObj(obj) {
   return JSON.parse(base64.decode(obj));
 }
 
+function checkUserTurn(currentUser, playerName) {
+  console.log("checking user")
+}
+
 const storage = {
   save: (name, data) => {
     localStorage.setItem(name, data);
@@ -30,5 +34,6 @@ const storage = {
 module.exports = {
   encryptObj,
   decryptObj,
-  storage
+  storage,
+  checkUserTurn
 };

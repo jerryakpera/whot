@@ -1,51 +1,57 @@
 <template>
-    <div>
-        <div class="playedCardsBox"></div>
+    <div :key="componentKey">
+      <div class="playedCardsBox"></div>
         <div @click="playCards" class="playingCard bg-white cardBox q-ma-xs q-pa-xs">
-            <div style="cursor: pointer; width: 100%" class="card">
-                <div>
-                    <div class="no">{{whotGame.playingCard.no}}</div>
-                        <q-badge color="primary value" text-color="white" :label="whotGame.playingCard.value" class="cardValue" />
-                        <div class="shape text-center" :class="whotGame.playingCard.shape"></div>
-                        <div class="text-right bottom">
-                        <q-badge color="primary value value-bottom" text-color="white" :label="whotGame.playingCard.value" />
-                        <div class="num text-right">{{whotGame.playingCard.no}}</div>
-                    </div>
-                </div>
+          <div style="cursor: pointer; width: 100%" class="card">
+            <div>
+              <div class="no">{{whotGame.playingCard.no}}</div>
+                <q-badge color="primary value" text-color="white" :label="whotGame.playingCard.value" class="cardValue" />
+                <div class="shape text-center" :class="whotGame.playingCard.shape"></div>
+                <div class="text-right bottom">
+                  <q-badge color="primary value value-bottom" text-color="white" :label="whotGame.playingCard.value" />
+                <div class="num text-right">{{whotGame.playingCard.no}}</div>
+              </div>
             </div>
+          </div>
         <q-dialog persistent v-model="showWhotDialog">
         <whotdialog @closeDialog="showWhotDialog = false" />
-        </q-dialog>
+      </q-dialog>
     </div>
-    </div>
+  </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 
 export default {
-    data: () => ({
-        showWhotDialog: false
-    }),
-    computed: {
-        ...mapGetters("game", ["whotGame"])
-    },
-    methods: {
-        playCards() {
-            console.log("Playing cards")
-        }
+  data: () => ({
+    showWhotDialog: false,
+    componentKey: 0
+  }),
+  computed: {
+    ...mapGetters("game", ["whotGame"])
+  },
+  methods: {
+    playCards() {
+      this.$root.$emit("playCards")
     }
+  },
+  mounted() {
+    this.$root.$on("refreshGameBoard", () => {
+      this.componentKey ++
+    })
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 .playedCardsBox {
-    width: 100px;
-    height: 30px;
-    border: 1px solid white;
-    border-radius: 5px;
-    margin-top: 14px;
-    margin-left: 4px;
+  width: 100px;
+  height: 30px;
+  border: 1px solid white;
+  border-radius: 5px;
+  margin-top: 14px;
+  margin-left: 4px;
 }
 
 .cardBox {

@@ -1,8 +1,19 @@
 <template>
     <q-card class="bg-primary text-white">
         <q-bar>
+            <div class="text-subtitle2 text-weight-bold">
+                {{whotGame.game.name}}
+            </div>
           <q-space />
-          <q-btn @click="leaveGame" dense flat icon="close">
+          <q-btn 
+            @click="leaveGame" 
+            dense 
+            unelevated
+            rounded
+            color="negative q-px-md" 
+            icon="close"
+            label="Leave Game"
+        >
             <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
           </q-btn>
         </q-bar>
@@ -20,7 +31,7 @@
                         :key="player.id"
                     >
                         <playerbox
-                            v-if="whotUser.username != player.name" 
+                            v-if="whotUser.username != player.name"
                             :player="player" :index="i" 
                         />
                     </div>
@@ -33,8 +44,10 @@
                 <div class="col-12 col-sm-5 col-md-3">
                     <gametable />
                 </div>
-                <div class="col-12 col-sm-auto">
-                    <playersbox />
+                <div v-for="player in whotGame.players" :key="player.id" class="col-12 col-sm-auto">
+                    <div v-if="whotUser.username == player.name">
+                        <playersbox :key="componentKey" :player="player" />
+                    </div>
                 </div>
             </div>
         </q-card-section>
@@ -45,9 +58,12 @@
 import { mapGetters } from "vuex";
 
 export default {
+    data: () => ({
+        componentKey: 0
+    }),
     computed: {
         ...mapGetters("users", ["whotUser"]),
-        ...mapGetters("game", ["whotGame"]),
+        ...mapGetters("game", ["whotGame"])
     },
     components: {
         playerbox: () => import("../../player/PlayerBox"),
@@ -55,9 +71,28 @@ export default {
         gametable: () => import("../../Table/GameTable"),
     },
     methods: {
-        leaveGame() {
-            console.log("Are you sure!?")
-        }
+        leaveGame () {
+            this.$q.dialog({
+                title: 'Quit Game',
+                message: 'This must be a surely be a mistake! You sure?!',
+                cancel: true,
+                persistent: true
+            }).onOk(() => {
+                this.$root.$emit("leaveGame")
+                this.$emit("closeDialog")
+            }).onOk(() => {
+                // console.log('>>>> second OK catcher')
+            }).onCancel(() => {
+                // console.log('>>>> Cancel')
+            }).onDismiss(() => {
+                // console.log('I am triggered on both OK and Cancel')
+            })
+        },
+    },
+    mounted() {
+        this.$root.$on("refreshGameBoard", () => {
+            this.componentKey ++
+        })
     }
 }
 </script>

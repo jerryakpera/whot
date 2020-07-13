@@ -56,7 +56,7 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <gamedialog />
+      <gamedialog @closeDialog="close" />
     </q-dialog>
   </div>
 </template>
@@ -74,17 +74,20 @@ export default {
   computed: {
     ...mapGetters("game", ["whotGame", "openGames"])
   },
-  methods: {
-    refreshOpenGames() {
-      this.$root.$emit("fetchOpenGames")
-    }
-  },
   components: {
     gamelist: () => import("../components/Game/GameList"),
     hostgame: () => import("../components/Game/HostGame"),
     gamewaiting: () => import("../components/Dialogs/Game/GameWaiting"),
     privategame: () => import("../components/Dialogs/Game/PrivateGame"),
     gamedialog: () => import("../components/Dialogs/Game/GameDialog"),
+  },
+  methods: {
+    refreshOpenGames() {
+      this.$root.$emit("fetchOpenGames")
+    },
+    close() {
+      this.gameDialog = false
+    }
   },
   created() {
     this.$root.$on("showGameWaitingDialog", () => {
@@ -98,6 +101,11 @@ export default {
 
     this.$root.$on("startGame", () => {
       this.gameDialog = true
+      // this.gameWaitingDialog = false
+    })
+
+    this.$root.$on("closeGameDialog", () => {
+      this.gameDialog = false
     })
   }
 };

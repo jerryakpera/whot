@@ -1,50 +1,51 @@
 <template>
   <q-layout  class="bg-secondary" view="lHh Lpr lFf">
     <q-header elevated>
-      <q-toolbar>
-        <q-toolbar-title>
-          <q-btn to="/" size="sm" icon="home" outline rounded color="secondary" label="Whot!" />
-        </q-toolbar-title>
-        <q-btn
-          @click="showRulesDialog = true"
-          to="/"
-          size="sm"
-          icon="gavel"
-          outline
-          rounded
-          color="secondary"
-          label="Rules!"
-        />
-        <q-btn
-          :color="isLoggedIn ? 'secondary' : 'grey'"
-          round
-          icon="person"
-          size="sm"
-          class="q-ml-md"
-          unelevated
-        >
-          <q-menu v-if="!isLoggedIn" fit>
-            <q-list style="min-width: 155px">
-              <q-item @click="loginDialog = true" clickable>
-                <q-item-section>Sign in</q-item-section>
-              </q-item>
-              <q-item @click="registerDialog = true" clickable>
-                <q-item-section>Register</q-item-section>
-              </q-item>
-            </q-list>
-          </q-menu>
-          <q-menu v-if="isLoggedIn" fit>
-            <q-list style="min-width: 155px">
-              <q-item @click="profileDialog = true" clickable>
-                <q-item-section>Profile</q-item-section>
-              </q-item>
-              <q-item @click="logUserOut" clickable>
-                <q-item-section>Log out</q-item-section>
-              </q-item>
-            </q-list>
-          </q-menu>
-        </q-btn>
-      </q-toolbar>
+      <q-bar>
+          <q-btn to="/" size="xs" icon="home" outline rounded color="secondary" label="Whot!" />
+          <q-space />
+
+          <q-btn
+            @click="showRulesDialog = true"
+            to="/"
+            size="sm"
+            icon="gavel"
+            outline
+            rounded
+            color="secondary"
+            label="Rules!"
+            class="q-mr-sm"
+          />
+          <q-btn
+            :color="isLoggedIn ? 'secondary' : 'grey'"
+            round
+            icon="person"
+            size="sm"
+            class="q-ml-md"
+            unelevated
+          >
+            <q-menu v-if="!isLoggedIn" fit>
+              <q-list style="min-width: 155px">
+                <q-item @click="loginDialog = true" clickable>
+                  <q-item-section>Sign in</q-item-section>
+                </q-item>
+                <q-item @click="registerDialog = true" clickable>
+                  <q-item-section>Register</q-item-section>
+                </q-item>
+              </q-list>
+            </q-menu>
+            <q-menu v-if="isLoggedIn" fit>
+              <q-list style="min-width: 155px">
+                <q-item @click="profileDialog = true" clickable>
+                  <q-item-section>Profile</q-item-section>
+                </q-item>
+                <q-item @click="logUserOut" clickable>
+                  <q-item-section>Log out</q-item-section>
+                </q-item>
+              </q-list>
+            </q-menu>
+          </q-btn>
+        </q-bar>
     </q-header>
 
     <q-page-container>
@@ -86,7 +87,7 @@ export default {
   }),
   computed: {
     ...mapGetters("users", ["isLoggedIn", "whotUser"]),
-    ...mapGetters("game", ["whotGame"])
+    ...mapGetters("game", ["whotGame", "currentPlayer", "selectedCards"])
   },
   components: {
     profiledialog: () => import("../components/Dialogs/Profile/ProfileDialog"),
@@ -110,6 +111,9 @@ export default {
       this.logout().then(() => {
         this.$router.push("/");
       });
+    },
+    checkTurn() {
+      return this.whotGame.players[this.whotGame.currentPlayer].name === this.whotUser.username
     }
   },
   mounted() {
@@ -200,7 +204,6 @@ export default {
 
     // Player leaves game
     this.$root.$on("leaveGame", () => {
-      // console.log(this.whotGame)
       const data = {
         gameID: this.whotGame.game.id,
         playerID: this.whotUser.userID
@@ -220,8 +223,19 @@ export default {
         this.$root.$emit("closeGameWaitingDialog")
         return 
       }
+
+      if (game.players.length === 1) {
+        this.$root.$emit("closeGameDialog")
+      }
       this.updateGame(game)
       this.$root.$emit("refreshWaitingGame")
+    })
+
+    this.socket.on("gameContinue", game => {
+      this.updateGame(game)
+      .then(() => {
+        this.$root.$emit("refreshGameBoard")
+      })
     })
 
     // Join a private game
@@ -240,6 +254,25 @@ export default {
       }
 
       this.socket.emit("joinGame", data)
+    })
+
+    this.$root.$on("pickMarket", () => {
+      const itsMyTurn = this.checkTurn()
+
+      if (!itsMyTurn) return
+      this.socket.emit("pickMarket", this.whotGame)
+    })
+
+    this.$root.$on("playCards", () => {
+      if (!this.checkTurn()) return
+
+      console.log(0, this.selectedCards)
+      const data = {
+        game: this.whotGame,
+        selectedCards: this.selectedCards
+      }
+
+      this.socket.emit("playCards", data)
     })
   },
   created() {

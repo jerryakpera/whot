@@ -1,12 +1,12 @@
 <template>
-    <q-card dark bordered class="bg-grey-9 playersBox q-pa-xs">
+    <q-card :key="componentKey" dark bordered class="bg-grey-9 playersBox q-pa-xs">
         <div>
             <div v-if="player">
                 <q-btn
                     @click="shout('warning')"
                     class="q-mx-sm"
                     size="xs"
-                    color="secondary"
+                    color="deep-orange"
                     icon="campaign"
                     label="Warning Card"
                 />
@@ -46,23 +46,24 @@ export default {
             width: "5px",
             opacity: 0.75
         },
-
         barStyle: {
             right: "2px",
             borderRadius: "9px",
             backgroundColor: "#027be3",
             width: "9px",
             opacity: 0.2
-        }
+        },
+        componentKey: 0
     }),
     props: {
+        player: {
+            type: Object,
+            required: true
+        }
     },
     computed: {
         ...mapGetters("users", ["whotUser"]),
         ...mapGetters("game", ["whotGame", "currentPlayer", "whotColors"]),
-        player() {
-            return this.whotGame.players.find(player => player.name === this.whotUser.username)
-        },
         index() {
             return this.whotGame.players.findIndex(player => player.name === this.whotUser.username)
         }
@@ -74,6 +75,11 @@ export default {
         shout(shoutType) {
             console.log("Shouting ", shoutType)
         }
+    },
+    mounted() {
+        this.$root.$on("refreshGameBoard", () => {
+            this.componentKey ++
+        })
     }
 }
 </script>
