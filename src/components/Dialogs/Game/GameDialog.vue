@@ -21,7 +21,7 @@
         <q-card-section horizontal>
             <q-scroll-area
                 horizontal
-                style="height: 240px; width: 100%;"
+                style="height: 200px; width: 100%;"
                 class="bg-grey-10 rounded-borders"
             >
                 <div class="row q-pa-sm no-wrap">
@@ -40,6 +40,13 @@
         </q-card-section>
 
         <q-card-section class="q-pa-sm">
+            <div class="row">
+                <q-banner :key="componentKey" inline-actions class="q-pa-xs text-dark bg-white" style="width: 230px">
+                    {{whotGame.lastMove}}
+                    <br />
+                    <div v-if="whotGame.whot.shape != ''" class="text-weight-bold text-secondary">{{whotGame.whot.shape}}</div>
+                </q-banner>
+            </div>
             <div class="row">
                 <div class="col-12 col-sm-5 col-md-3">
                     <gametable />

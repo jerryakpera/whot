@@ -358,6 +358,14 @@ const actions = {
       resolve()
     })
   },
+  setWhotShape({
+    commit
+  }, shape) {
+    return new Promise((resolve, reject) => {
+      commit("updateWhotShape", shape)
+      resolve()
+    })
+  },
   updateGamesList({commit}, games) {
     return new Promise((resolve, reject) => {
       commit("updateGamesList", games)
@@ -382,12 +390,20 @@ const actions = {
   },
   setShout({commit}, shoutType) {
     commit("setShout", shoutType)
-  }
+  },
 };
 
 const mutations = {
   updateGame(state, game) {
     Object.assign(state.game, game)
+  },
+  updateWhotShape(state, shape) {
+    const whot = {
+      state: true,
+      shape
+    }
+
+    Object.assign(state.game.whot, whot)
   },
   updateGamesList(state, games) {
     state.games = [ ...games ]
@@ -413,19 +429,15 @@ const mutations = {
     state.selectedCards = []
   },
   setShout(state, shoutType) {
-    const currentPlayer = state.game.players[state.game.currentPlayer]
+    const currentPlayerID = state.game.players[state.game.currentPlayer].id
     
-    const shoutIndex = state.game.shouts.findIndex(shout => shout.player === currentPlayer.name)
-    const shout = {
-      player: currentPlayer.name,
-      type: shoutType
+    if (state.game.shouts.length == 0) {
+      state.game.shouts.push(currentPlayerID)
     }
 
-    console.log(shoutIndex, state.game.shouts)
-    if (shoutIndex >= 0) {
-      state.game.shouts[shoutIndex] = shout
-    } else {
-      state.game.shouts.push(shout)
+    if (state.game.shouts.includes(currentPlayerID)) {
+      const shoutIndex = state.game.shouts.findIndex(shout => shout === currentPlayerID)
+      state.game.shouts.splice(shoutIndex, 1)
     }
   }
 };

@@ -8,6 +8,9 @@
         :class="checkTurn ? 'turnBorder' : ''"
     >
         <q-card-section class="q-pa-none">
+            <q-avatar size="sm" :color="colors[index]" text-color="white" class="q-ml-xs">
+                {{player.name.substring(0, 1)}}
+            </q-avatar>
             <q-chip size="sm" square>
                 <q-avatar :color="colors[index]" text-color="white">
                     {{player.cards.length}}
@@ -22,27 +25,6 @@
         </q-card-section>
 
         <q-card-section class="q-pa-xs">
-            <q-avatar size="sm" :color="colors[index]" text-color="white">
-                {{player.name.substring(0, 1)}}
-            </q-avatar>
-            <!-- {{whotGame.shouts}} -->
-            <q-btn
-                v-if="shouts.length > 0"
-                round 
-                :color="shouts[0].type === 'warning' ? 'deep-orange' : 'blue'"
-                :icon="shouts[0].type === 'warning' ? 'campaign' : 'priority_high'" 
-                unelevated
-                size="sm"
-                class="q-ml-sm"    
-            />
-            <!-- <q-chip
-                v-if="player.shouts.length > 0"
-                size="sm" 
-                color="deep-orange" text-color="white" 
-                icon="campaign"
-            >
-                Last Card
-            </q-chip> -->
         </q-card-section>
     </q-card>
 </template>

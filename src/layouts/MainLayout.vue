@@ -69,6 +69,11 @@
     <q-dialog v-model="registerDialog">
       <registerdialog @closeDialog="closeRegister" />
     </q-dialog>
+    <q-dialog
+      v-model="whotDialog"
+    >
+      <whotdialog @closeDialog="whotDialog = false"/>
+    </q-dialog>
   </q-layout>
 </template>
 
@@ -79,6 +84,7 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   name: "MainLayout",
   data: () => ({
+    whotDialog: false,
     profileDialog: false,
     showRulesDialog: false,
     loginDialog: false,
@@ -93,11 +99,12 @@ export default {
     profiledialog: () => import("../components/Dialogs/Profile/ProfileDialog"),
     rulesdialog: () => import("../components/Rules/Rules"),
     logindialog: () => import("../components/Dialogs/Auth/LoginDialog"),
+    whotdialog: () => import("../components/Dialogs/Game/WhotDialog"),
     registerdialog: () => import("../components/Dialogs/Auth/RegisterDialog")
   },
   methods: {
     ...mapActions("users", ["checkUserLogin", "logout"]),
-    ...mapActions("game", ["updateGame", "updateGamesList"]),
+    ...mapActions("game", ["updateGame", "updateGamesList", "setWhotShape"]),
     closeProfile() {
       this.profileDialog = false;
     },
@@ -242,7 +249,15 @@ export default {
       this.updateGame(game)
       .then(() => {
         this.$root.$emit("refreshGameBoard")
-        this.showNotif(game.lastMove)
+        // this.showNotif(game.lastMove)
+      })
+    })
+
+    this.socket.on("selectShape", game => {
+      this.updateGame(game)
+      .then(() => {
+        this.$root.$emit("refreshGameBoard")
+        this.whotDialog = true
       })
     })
 
@@ -284,6 +299,13 @@ export default {
 
     this.$root.$on("refreshGame", () => {
         this.$root.$emit("refreshGameBoard")
+    })
+
+    this.$root.$on("shapeSelected", shape => {
+      this.setWhotShape(shape)
+      .then(() => {
+        this.socket.emit("shapeSelected", this.whotGame)
+      })
     })
   },
   created() {

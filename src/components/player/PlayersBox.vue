@@ -8,15 +8,12 @@
     >
         <div>
             <div v-if="player">
-                {{playerShouts}}
-                <q-btn
-                    @click="shout('warning')"
-                    class="q-mx-sm"
-                    size="xs"
-                    color="deep-orange"
-                    icon="campaign"
-                    label="Warning Card"
-                />
+                <q-chip size="sm" square>
+                    <q-avatar color="primary" text-color="white">
+                        {{player.cards.length}}
+                    </q-avatar>
+                    C A R D S
+                </q-chip>
                 <q-btn
                     @click="shout('lastCard')"
                     size="xs"
@@ -86,7 +83,7 @@ export default {
         shout(shoutType) {
             if (!this.checkTurn) return
             this.setShout(shoutType)
-            this.$root.$emit("refreshGameBoard")
+            // this.$root.$emit("refreshGameBoard")
         }
     },
     mounted() {
