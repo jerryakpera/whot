@@ -8,6 +8,7 @@
     >
         <div>
             <div v-if="player">
+                <q-btn @click="chatDialog = true" round color="secondary" icon="textsms" class="q-mx-sm" size="xs" />
                 <q-chip size="sm" square>
                     <q-avatar color="primary" text-color="white">
                         {{player.cards.length}}
@@ -35,6 +36,9 @@
                 </div>
             </q-scroll-area>
         </div>
+        <q-dialog v-model="chatDialog">
+            <chatbox @closeDialog="closeChat" />
+        </q-dialog>
     </q-card>
 </template>
 
@@ -43,6 +47,7 @@ import { mapActions, mapGetters } from "vuex";
 
 export default {
     data: () => ({
+        chatDialog: false,
         thumbStyle: {
             right: "4px",
             borderRadius: "5px",
@@ -76,14 +81,17 @@ export default {
         }
     },
     components: {
-        whotcard: () => import("../Game/WhotCard")
+        whotcard: () => import("../Game/WhotCard"),
+        chatbox: () => import("../Dialogs/Game/ChatDialog")
     },
     methods: {
         ...mapActions("game", ["setShout"]),
         shout(shoutType) {
             if (!this.checkTurn) return
             this.setShout(shoutType)
-            // this.$root.$emit("refreshGameBoard")
+        },
+        closeChat() {
+            this.chatDialog = false
         }
     },
     mounted() {

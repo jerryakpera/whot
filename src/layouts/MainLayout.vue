@@ -4,7 +4,7 @@
       <q-bar>
           <q-btn to="/" size="xs" icon="home" outline rounded color="secondary" label="Whot!" />
           <q-space />
-
+          <audio id="audio" src="../../public/sounds/notif1.mp3"></audio>
           <q-btn
             @click="showRulesDialog = true"
             to="/"
@@ -93,7 +93,7 @@ export default {
   }),
   computed: {
     ...mapGetters("users", ["isLoggedIn", "whotUser"]),
-    ...mapGetters("game", ["whotGame", "currentPlayer", "selectedCards"])
+    ...mapGetters("game", ["whotGame", "currentPlayer", "selectedCards", "whotSettings"])
   },
   components: {
     profiledialog: () => import("../components/Dialogs/Profile/ProfileDialog"),
@@ -127,6 +127,13 @@ export default {
         message: message,
         color: 'dark',
         timeout: 1500
+      })
+    },
+    showMsgNotif (message) {
+      this.$q.notify({
+        player: message.player,
+        caption: message.message,
+        color: 'primary'
       })
     }
   },
@@ -246,8 +253,10 @@ export default {
     })
 
     this.socket.on("gameContinue", game => {
+      var audio = document.getElementById("audio");
       this.updateGame(game)
       .then(() => {
+        // if (this.whotSettings.sound) audio.play();
         this.$root.$emit("refreshGameBoard")
         // this.showNotif(game.lastMove)
       })
@@ -306,6 +315,19 @@ export default {
       .then(() => {
         this.socket.emit("shapeSelected", this.whotGame)
       })
+    })
+
+    this.$root.$on("sendMessage", message => {
+      const newMessage = {
+        player: this.whotUser.username,
+        message
+      }
+      this.socket.emit("sendMessage", newMessage)
+    })
+
+    this.socket.on("receiveMsg", message => {
+      const showMessage = `${message.player}: ${message.message}`
+      this.showNotif(showMessage)
     })
   },
   created() {

@@ -37,7 +37,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters("game", ["selectedCards"]),
+    ...mapGetters("game", ["selectedCards", "whotGame", "currentPlayer"]),
     position() {
       return this.selectedCards.findIndex(id => this.card.id == id);
     }
@@ -45,6 +45,8 @@ export default {
   methods: {
     ...mapActions("game", ["selectACard", "removeCard"]),
     selectCard() {
+      const currentPlayer = this.whotGame.players[this.whotGame.currentPlayer]
+
       // Check for the card amongst selected cards
       const index = this.selectedCards.findIndex(id => id == this.card.id);
 
@@ -57,8 +59,7 @@ export default {
       // IF the card hasnt been selected then add the card to the selected cards
       this.selectACard(this.card);
     }
-  },
-  mounted() {}
+  }
 };
 </script>
 

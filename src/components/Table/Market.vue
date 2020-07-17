@@ -15,11 +15,16 @@ export default {
         componentKey: 0
     }),
     computed: {
-        ...mapGetters("game", ["whotGame", "currentPlayer"])
+        ...mapGetters("game", ["whotGame", "currentPlayer"]),
+        ...mapGetters("users", ["whotUser"])
     },
     methods: {
         pickMarket() {
-            this.$root.$emit("pickMarket")
+            const currentPlayer = this.whotGame.players[this.whotGame.currentPlayer]
+
+            if(currentPlayer.name === this.whotUser.username) {
+                this.$root.$emit("pickMarket")
+            }
         }
     },
     mounted() {

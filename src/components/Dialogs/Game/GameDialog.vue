@@ -4,8 +4,15 @@
             <div class="text-subtitle2 text-weight-bold">
                 {{whotGame.game.name}}
             </div>
-          <q-space />
-          <q-btn 
+        <q-space />
+        <q-btn 
+            @click="changeSound" 
+            dense
+            round
+            :color="whotSettings.sound ? 'positive' : 'dark'" 
+            :icon="whotSettings.sound ? 'volume_up' : 'volume_off'"
+        />
+        <q-btn 
             @click="leaveGame" 
             dense 
             unelevated
@@ -15,7 +22,7 @@
             label="Leave Game"
         >
             <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
-          </q-btn>
+        </q-btn>
         </q-bar>
 
         <q-card-section horizontal>
@@ -41,7 +48,7 @@
 
         <q-card-section class="q-pa-sm">
             <div class="row">
-                <q-banner :key="componentKey" inline-actions class="q-pa-xs text-dark bg-white" style="width: 230px">
+                <q-banner :key="componentKey" inline-actions class="q-pa-xs text-dark bg-white lastMove" style="width: 230px">
                     {{whotGame.lastMove}}
                     <br />
                     <div v-if="whotGame.whot.shape != ''" class="text-weight-bold text-secondary">{{whotGame.whot.shape}}</div>
@@ -63,7 +70,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
     data: () => ({
@@ -71,7 +78,7 @@ export default {
     }),
     computed: {
         ...mapGetters("users", ["whotUser"]),
-        ...mapGetters("game", ["whotGame"])
+        ...mapGetters("game", ["whotGame", "whotSettings"])
     },
     components: {
         playerbox: () => import("../../player/PlayerBox"),
@@ -80,6 +87,11 @@ export default {
         powerbutton: () => import("../../Table/PowerButton"),
     },
     methods: {
+        ...mapActions("game", ["updateSound"]),
+        changeSound() {
+            console.log(this.whotSettings.sound)
+            this.updateSound()
+        },
         leaveGame () {
             this.$q.dialog({
                 title: 'Quit Game',
@@ -105,3 +117,11 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.lastMove {
+    border: 4px solid brown;
+    border-radius: 5px;
+    font-size: 1.2em;
+}
+</style>

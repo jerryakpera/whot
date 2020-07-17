@@ -334,7 +334,10 @@ const state = {
     "blue-grey",
     "blue"
   ],
-  selectedCards: []
+  selectedCards: [],
+  settings: {
+    sound: true
+  }
 };
 
 const getters = {
@@ -345,7 +348,11 @@ const getters = {
   whotColors: () => state.colors,
   selectedCards: () => state.selectedCards,
   lastPlayedCards: () => state.game.lastPlayedCards,
-  playerShouts: () => state.game.shouts
+  playerShouts: () => state.game.shouts,
+  whotSettings: () => state.settings,
+  checkTurn() {
+    return state.game.players[state.game.currentPlayer].name
+  },
 };
 
 const actions = {
@@ -391,11 +398,17 @@ const actions = {
   setShout({commit}, shoutType) {
     commit("setShout", shoutType)
   },
+  updateSound({commit}) {
+    commit("updateSound")
+  },
 };
 
 const mutations = {
   updateGame(state, game) {
     Object.assign(state.game, game)
+  },
+  updateSound(state) {
+    state.settings.sound = !state.settings.sound
   },
   updateWhotShape(state, shape) {
     const whot = {

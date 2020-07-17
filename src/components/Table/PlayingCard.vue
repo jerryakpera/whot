@@ -1,7 +1,6 @@
 <template>
     <div style="display: block" :key="componentKey">
-      <!-- <div class="playedCardsBox"></div> -->
-        <div @click="playCards" class="playingCard bg-white cardBox q-ma-xs q-pa-xs">
+      <div @click="playCards" class="playingCard bg-white cardBox q-ma-xs q-pa-xs">
           <div style="cursor: pointer; width: 100%" class="card">
             <div>
               <div class="no">{{whotGame.playingCard.no}}</div>
@@ -29,11 +28,20 @@ export default {
     componentKey: 0
   }),
   computed: {
-    ...mapGetters("game", ["whotGame"])
+    ...mapGetters("game", ["whotGame", "whotSettings", "checkTurn", "selectedCards"]),
+    ...mapGetters("users", ["whotUser"])
   },
   methods: {
     playCards() {
-      this.$root.$emit("playCards")
+      const currentPlayer = this.whotGame.players[this.whotGame.currentPlayer]
+
+      if (this.selectedCards.length === 0) return
+
+      if (currentPlayer.name === this.whotUser.username) {
+        if(this.selectedCards.length > 0 && this.whotSettings.sound) {
+          this.$root.$emit("playCards")
+        }
+      }
     }
   },
   components: {
