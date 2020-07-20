@@ -13,8 +13,8 @@
             </div>
           </div>
         <q-dialog persistent v-model="showWhotDialog">
-        <whotdialog @closeDialog="showWhotDialog = false" />
-      </q-dialog>
+          <whotdialog @closeDialog="showWhotDialog = false" />
+        </q-dialog>
     </div>
   </div>
 </template>

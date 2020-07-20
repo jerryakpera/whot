@@ -4,25 +4,35 @@
             <div class="text-subtitle2 text-weight-bold">
                 {{whotGame.game.name}}
             </div>
-        <q-space />
-        <q-btn 
-            @click="changeSound" 
-            dense
-            round
-            :color="whotSettings.sound ? 'positive' : 'dark'" 
-            :icon="whotSettings.sound ? 'volume_up' : 'volume_off'"
-        />
-        <q-btn 
-            @click="leaveGame" 
-            dense 
-            unelevated
-            rounded
-            color="negative q-px-md" 
-            icon="close"
-            label="Leave Game"
-        >
-            <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
-        </q-btn>
+            <q-space />
+            <q-dialog v-model="gameScoresDialog">
+                <gamescores :scoreCard="whotGame.scoreCard" />
+            </q-dialog>
+            <q-btn 
+                @click="gameScoresDialog = true" 
+                dense
+                round
+                color="secondary" 
+                icon="emoji_events"
+            />
+            <q-btn 
+                @click="changeSound" 
+                dense
+                round
+                :color="whotSettings.sound ? 'positive' : 'dark'" 
+                :icon="whotSettings.sound ? 'volume_up' : 'volume_off'"
+            />
+            <q-btn 
+                @click="leaveGame" 
+                dense 
+                unelevated
+                rounded
+                color="negative q-px-md" 
+                icon="close"
+                label="Leave Game"
+            >
+                <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
+            </q-btn>
         </q-bar>
 
         <q-card-section horizontal>
@@ -42,6 +52,7 @@
                             :player="player" :index="i" 
                         />
                     </div>
+                    {{gameShout}}
                 </div>
             </q-scroll-area>
         </q-card-section>
@@ -57,7 +68,6 @@
             <div class="row">
                 <div class="col-12 col-sm-5 col-md-3">
                     <gametable />
-                    <!-- <powerbutton /> -->
                 </div>
                 <div v-for="player in whotGame.players" :key="player.id" class="col-12 col-sm-auto">
                     <div v-if="whotUser.username == player.name">
@@ -66,7 +76,7 @@
                 </div>
             </div>
         </q-card-section>
-      </q-card>
+    </q-card>
 </template>
 
 <script>
@@ -74,17 +84,18 @@ import { mapActions, mapGetters } from "vuex";
 
 export default {
     data: () => ({
-        componentKey: 0
+        componentKey: 0,
+        gameScoresDialog: false
     }),
     computed: {
         ...mapGetters("users", ["whotUser"]),
-        ...mapGetters("game", ["whotGame", "whotSettings"])
+        ...mapGetters("game", ["whotGame", "whotSettings", "gameShout"])
     },
     components: {
         playerbox: () => import("../../player/PlayerBox"),
         playersbox: () => import("../../player/PlayersBox"),
         gametable: () => import("../../Table/GameTable"),
-        powerbutton: () => import("../../Table/PowerButton"),
+        gamescores: () => import("./GameScores"),
     },
     methods: {
         ...mapActions("game", ["updateSound"]),
@@ -114,6 +125,11 @@ export default {
         this.$root.$on("refreshGameBoard", () => {
             this.componentKey ++
         })
+
+        this.$root.$on("refreshShouts", () => {
+            console.log(this.gameShout)
+            this.componentKey ++
+        })   
     }
 }
 </script>

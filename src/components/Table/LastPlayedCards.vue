@@ -154,7 +154,7 @@ export default {
 
 .whot {
   margin: 10px auto;
-  font-size: 0.5em;
+  font-size: 0.4em;
   text-align: center;
   color: brown;
   // width: 100px;
@@ -168,7 +168,6 @@ export default {
 }
 
 .bottom {
-
   .num {
     color: brown;
     font-size: 1em;

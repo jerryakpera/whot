@@ -18,8 +18,8 @@
                 <q-btn
                     @click="shout('lastCard')"
                     size="xs"
-                    color="light-blue-9"
-                    icon="priority_high"
+                    :color="this.checkTurn ? 'blue-9' : 'grey'"
+                    icon="campaign"
                     label="Last Card"
                 />
             </div>
@@ -88,7 +88,8 @@ export default {
         ...mapActions("game", ["setShout"]),
         shout(shoutType) {
             if (!this.checkTurn) return
-            this.setShout(shoutType)
+            // this.setShout(shoutType)
+            this.$root.$emit("lastCard")
         },
         closeChat() {
             this.chatDialog = false

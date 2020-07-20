@@ -337,7 +337,8 @@ const state = {
   selectedCards: [],
   settings: {
     sound: true
-  }
+  },
+  gameShout: {}
 };
 
 const getters = {
@@ -353,6 +354,7 @@ const getters = {
   checkTurn() {
     return state.game.players[state.game.currentPlayer].name
   },
+  gameShout: () => state.gameShout
 };
 
 const actions = {
@@ -401,11 +403,20 @@ const actions = {
   updateSound({commit}) {
     commit("updateSound")
   },
+  updateShout({commit}, gameShout) {
+    return new Promise((resolve, reject) => {
+      commit("updateShout", gameShout)
+      resolve()
+    })
+  }
 };
 
 const mutations = {
   updateGame(state, game) {
     Object.assign(state.game, game)
+  },
+  updateShout(state, gameShout) {
+    Object.assign(state.gameShout, gameShout)
   },
   updateSound(state) {
     state.settings.sound = !state.settings.sound
@@ -441,8 +452,11 @@ const mutations = {
   clearSelectedCards(state) {
     state.selectedCards = []
   },
-  setShout(state, shoutType) {
+  setShout(state) {
+    console.log("Shouting")
     const currentPlayerID = state.game.players[state.game.currentPlayer].id
+
+    console.log(currentPlayerID)
     
     if (state.game.shouts.length == 0) {
       state.game.shouts.push(currentPlayerID)
@@ -452,6 +466,8 @@ const mutations = {
       const shoutIndex = state.game.shouts.findIndex(shout => shout === currentPlayerID)
       state.game.shouts.splice(shoutIndex, 1)
     }
+
+    console.log(0, state.game.shouts)
   }
 };
 

@@ -104,7 +104,7 @@ export default {
   },
   methods: {
     ...mapActions("users", ["checkUserLogin", "logout"]),
-    ...mapActions("game", ["updateGame", "updateGamesList", "setWhotShape"]),
+    ...mapActions("game", ["updateGame", "updateGamesList", "setWhotShape", "updateShout"]),
     closeProfile() {
       this.profileDialog = false;
     },
@@ -328,6 +328,18 @@ export default {
     this.socket.on("receiveMsg", message => {
       const showMessage = `${message.player}: ${message.message}`
       this.showNotif(showMessage)
+    })
+
+    this.socket.on("broadcastShout", gameShout => {
+      this.showNotif(`${gameShout.playerName} LAST CARD`)
+    })
+
+    this.$root.$on("lastCard", () => {
+      const shout = {
+        gameID: this.whotGame.game.id,
+        playerName: this.currentPlayer.name,
+      }
+      this.socket.emit("shoutLastCard", shout)
     })
   },
   created() {
