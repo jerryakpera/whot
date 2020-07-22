@@ -26,7 +26,13 @@
         <div
           class="text-body1 q-mb-md"
         >All other cards not mentioned in this list are considered normal playing cards and are used to continue the game.</div>
-        <cardsrules />
+        <q-scroll-area
+          :thumb-style="thumbStyle"
+          :bar-style="barStyle"
+          style="height: 500px;"
+        >
+          <cardsrules />
+        </q-scroll-area>
       </q-tab-panel>
     </q-tab-panels>
   </div>
@@ -36,7 +42,22 @@
 export default {
   data() {
     return {
-      tab: "howtoplay"
+      tab: "howtoplay",
+      thumbStyle: {
+        right: '4px',
+        borderRadius: '5px',
+        backgroundColor: '#027be3',
+        width: '5px',
+        opacity: 0.75
+      },
+
+      barStyle: {
+        right: '2px',
+        borderRadius: '9px',
+        backgroundColor: '#027be3',
+        width: '9px',
+        opacity: 0.2
+      }
     };
   },
   components: {

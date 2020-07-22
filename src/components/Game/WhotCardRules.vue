@@ -1,6 +1,6 @@
 <template>
   <div style="display: inline-block" class="q-pa-xs">
-    <div @click="selectCard" class="bg-white cardBox q-ma-xs q-pa-xs">
+    <div class="bg-white cardBox q-ma-xs q-pa-xs">
       <div style="cursor: pointer; width: 100%" class="card">
         <div>
           <div class="no">{{card.no}}</div>

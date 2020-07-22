@@ -22,6 +22,14 @@ const routes = [{
           requiresAuth: true
         }
       },
+      {
+        path: '/onboarding',
+        name: "Onboarding",
+        component: () => import('pages/PageOnboarding.vue'),
+        meta: {
+          requiresAuth: true
+        }
+      },
     ]
   },
 

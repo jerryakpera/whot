@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p v-for="rule in rules" :key="rule">{{rule}}</p>
+    <p :class="page === 'onboarding' ? 'q-px-md' : ''" v-for="rule in rules" :key="rule">{{rule}}</p>
   </div>
 </template>
 
@@ -8,7 +8,9 @@
 export default {
   data: () => ({
     rules: [
-      "The player to dealer's left begins by playing cards from their hand face up on the playing card",
+      "Click on any card to select it and on the face-up playing card to play it.",
+      "A combination of similar number cards can be played",
+      "A yellow border around the player box indicates the players turn",
       "Players then play cards face up one by one on the playing card, if they have a card that fits",
       "Possible plays: ",
       "any card with the same shape as the previous play, any card with the same number as the previous play, any Whot card",
@@ -17,7 +19,11 @@ export default {
       "If you cannot or do not wish to play, pick from the market. Which are the face down cards on the table"
     ]
   }),
-  props: {},
+  props: {
+    page: {
+      type: String
+    }
+  },
   components: {}
 };
 </script>

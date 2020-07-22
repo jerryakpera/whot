@@ -6,6 +6,7 @@
       inline-actions
       rounded
       class="q-my-xs bg-white text-primary"
+      :class="page === 'onboarding' ? 'q-px-md' : ''"
       dense
     >{{rule}}</q-banner>
   </div>
@@ -21,7 +22,11 @@ export default {
       "In a highest number out game, the player with the highest points when the game is finished is out. The remaining players continue playing until a winner is left"
     ]
   }),
-  props: {},
+  props: {
+    page: {
+      type: String
+    }
+  },
   components: {}
 };
 </script>

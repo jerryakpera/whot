@@ -24,7 +24,7 @@
             class="q-ml-md"
             unelevated
           >
-            <q-menu v-if="!isLoggedIn" fit>
+            <!-- <q-menu v-if="!isLoggedIn" fit>
               <q-list style="min-width: 155px">
                 <q-item @click="loginDialog = true" clickable>
                   <q-item-section>Sign in</q-item-section>
@@ -33,10 +33,10 @@
                   <q-item-section>Register</q-item-section>
                 </q-item>
               </q-list>
-            </q-menu>
+            </q-menu> -->
             <q-menu v-if="isLoggedIn" fit>
               <q-list style="min-width: 155px">
-                <q-item @click="profileDialog = true" clickable>
+                <q-item dense @click="profileDialog = true" clickable>
                   <q-item-section>Profile</q-item-section>
                 </q-item>
                 <q-item @click="logUserOut" clickable>
