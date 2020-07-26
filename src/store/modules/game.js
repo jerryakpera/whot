@@ -354,7 +354,7 @@ const getters = {
   checkTurn() {
     return state.game.players[state.game.currentPlayer].name
   },
-  gameShout: () => state.gameShout
+  gameShouts: () => state.gameShout
 };
 
 const actions = {
@@ -416,7 +416,8 @@ const mutations = {
     Object.assign(state.game, game)
   },
   updateShout(state, gameShout) {
-    Object.assign(state.gameShout, gameShout)
+    state.game.shouts = []
+    state.game.shouts = [...gameShout]
   },
   updateSound(state) {
     state.settings.sound = !state.settings.sound

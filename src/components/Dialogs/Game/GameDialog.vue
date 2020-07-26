@@ -52,7 +52,6 @@
                             :player="player" :index="i" 
                         />
                     </div>
-                    {{gameShout}}
                 </div>
             </q-scroll-area>
         </q-card-section>
@@ -76,6 +75,13 @@
                 </div>
             </div>
         </q-card-section>
+        <q-dialog v-model="gameOverDialog">
+            <q-card>
+                <q-card-section>
+                    <div class="text-h6">Game Over</div>
+                </q-card-section>
+            </q-card>
+        </q-dialog>
     </q-card>
 </template>
 
@@ -85,7 +91,8 @@ import { mapActions, mapGetters } from "vuex";
 export default {
     data: () => ({
         componentKey: 0,
-        gameScoresDialog: false
+        gameScoresDialog: false,
+        gameOverDialog: false
     }),
     computed: {
         ...mapGetters("users", ["whotUser"]),
@@ -127,16 +134,19 @@ export default {
         })
 
         this.$root.$on("refreshShouts", () => {
-            console.log(this.gameShout)
             this.componentKey ++
         })   
+
+        this.$root.$on("gameOver", () => {
+            this.gameOverDialog = true
+        })
     }
 }
 </script>
 
 <style lang="scss" scoped>
 .lastMove {
-    border: 4px solid brown;
+    border: 2px solid brown;
     border-radius: 5px;
     font-size: 1.2em;
 }

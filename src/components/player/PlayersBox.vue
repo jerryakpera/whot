@@ -18,10 +18,17 @@
                 <q-btn
                     @click="shout('lastCard')"
                     size="xs"
-                    :color="this.checkTurn ? 'blue-9' : 'grey'"
+                    :color="!this.checkTurn ? 'blue-9' : 'grey'"
                     icon="campaign"
                     label="Last Card"
                 />
+                <q-chip v-for="shout in whotGame.shouts" :key="shout.playerID" size="xs" dense square>
+                    <q-avatar color="negative" text-color="white">
+                        LC
+                    </q-avatar>
+                    {{shout.playerName}}
+                </q-chip>
+                <!-- {{whotGame.shouts}} -->
             </div>
             <q-separator />
             <q-scroll-area
@@ -72,7 +79,7 @@ export default {
     },
     computed: {
         ...mapGetters("users", ["whotUser"]),
-        ...mapGetters("game", ["whotGame", "currentPlayer", "whotColors", "playerShouts"]),
+        ...mapGetters("game", ["whotGame", "currentPlayer", "whotColors", "gameShouts"]),
         index() {
             return this.whotGame.players.findIndex(player => player.name === this.whotUser.username)
         },
@@ -87,7 +94,7 @@ export default {
     methods: {
         ...mapActions("game", ["setShout"]),
         shout(shoutType) {
-            if (!this.checkTurn) return
+            if (this.checkTurn) return
             // this.setShout(shoutType)
             this.$root.$emit("lastCard")
         },

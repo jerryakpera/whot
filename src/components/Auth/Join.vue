@@ -54,7 +54,7 @@
                 <template v-slot:append>
                     <q-icon
                     size="xs"
-                    class="cursor-pointer text-accent"
+                    class="cursor-pointer text-blue-10"
                     :name="isPassword ? 'visibility_off' : 'visibility'"
                     v-on:click="isPassword = !isPassword"
                     ></q-icon>
@@ -79,7 +79,7 @@
                 <template v-slot:append>
                     <q-icon
                     size="xs"
-                    class="cursor-pointer text-accent"
+                    class="cursor-pointer text-blue-10"
                     :name="isConfirmPassword ? 'visibility_off' : 'visibility'"
                     v-on:click="isConfirmPassword = !isConfirmPassword"
                     ></q-icon>

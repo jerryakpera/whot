@@ -262,6 +262,10 @@ export default {
       })
     })
 
+    this.socket.on("gameOver", game => {
+      this.$root.$emit("gameOver")
+    })
+
     this.socket.on("selectShape", game => {
       this.updateGame(game)
       .then(() => {
@@ -334,10 +338,18 @@ export default {
       this.showNotif(`${gameShout.playerName} LAST CARD`)
     })
 
+    this.socket.on("updateShouts", gameShout => {
+      this.updateShout(gameShout)
+      .then(() => {
+        this.$root.$emit("refreshGameBoard")
+      })
+    })
+
     this.$root.$on("lastCard", () => {
       const shout = {
-        gameID: this.whotGame.game.id,
+        gameShouts: this.whotGame.shouts,
         playerName: this.currentPlayer.name,
+        playerID: this.currentPlayer.id,
       }
       this.socket.emit("shoutLastCard", shout)
     })

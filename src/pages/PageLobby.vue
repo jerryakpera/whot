@@ -1,6 +1,13 @@
 <template>
   <div class="flex flex-center">
     <q-card class="q-mt-sm q-pa-md my-card" style="width: 350px">
+      <q-card-section>
+        <q-btn-group spread flat rounded>
+          <q-btn dense :label="whotUser.played" icon="donut_large" color="secondary" />
+          <q-btn dense :label="whotUser.won" icon="emoji_events" color="positive" />
+          <q-btn dense :label="whotUser.lost" icon="thumb_down_alt" color="negative" />
+        </q-btn-group>
+      </q-card-section>
       <q-card-section class="bg-white q-pa-xs">
         <q-btn
           @click="hostGameDialog = true"
@@ -44,7 +51,7 @@
       <hostgame />
     </q-dialog>
     <q-dialog persistent v-model="gameWaitingDialog">
-      <gamewaiting :game="whotGame" />
+      <gamewaiting :game="whotGame" :user="whotUser" />
     </q-dialog>
     <q-dialog persistent v-model="privateGameDialog">
       <privategame />
@@ -72,7 +79,8 @@ export default {
     privateGameDialog: false,
   }),
   computed: {
-    ...mapGetters("game", ["whotGame", "openGames"])
+    ...mapGetters("game", ["whotGame", "openGames"]),
+    ...mapGetters("users", ["whotUser"])
   },
   components: {
     gamelist: () => import("../components/Game/GameList"),
