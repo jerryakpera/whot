@@ -68,7 +68,7 @@ export default {
 
       this.fetchProfile()
       .then(whotUser => {
-        if (game.stake < whotUser.points) {
+        if (game.stake > whotUser.points) {
           this.$root.$emit("showBasicNotification", "Insufficient points")
           return
         }
