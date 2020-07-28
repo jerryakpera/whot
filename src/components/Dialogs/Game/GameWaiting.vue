@@ -2,6 +2,7 @@
   <q-card :key="componentKey" style="width: 250px;">
     <q-card-section class="bg-primary text-white q-mb-none">
       <div class="text-h6">{{game.game.name}}</div>
+      <q-icon size="xs" color="white" name="score" /> {{game.game.stake}}
       <div v-if="!game.game.private" class="text-caption">(waiting)</div>
       <div v-else>
         <div class="text-body1"> {{game.game.id}} </div>
@@ -20,33 +21,37 @@
           <q-icon
             name="how_to_reg"
             style="font-size: 3em;" 
-            :color="game.players[i] ? 'primary' : 'grey'"
+            :color="game.players[i] ? 'positive' : 'grey'"
           />
-          <div v-if="game.players[i]" class="text-h6 text-primary">
-            {{ game.players[i] ? game.players[i].name : 'Player ' + i }}
+          <div v-if="game.players[i]" class="text-subtitle2 text-positive">
+            {{ game.players[i].name }}
+            <br />
+            <span :class="game.players[i].points > 750 ? 'green-10' : game.players[i].points > 500 ? 'blue-5' : 'red-10'">
+              {{ game.players[i].points }}
+            </span>
           </div>
           <div v-else class="text-subtitle2 text-black">
-            Player {{ i }}
+            Player {{ i + 1 }}
           </div>
         </div>
         <div v-if="game.players[i]" class="col-6">
-          <q-chip size="sm" square>
+          <q-chip dense size="md" square>
             <q-avatar color="red" text-color="white">
-              {{game.players[i].played}}
+              <span class="text-caption" style="font-size: 0.7em">
+                {{game.players[i].points}}
+              </span>
             </q-avatar>
-            Played
+            <span class="text-caption">
+              Points
+            </span>
           </q-chip>
-          <q-chip size="sm" square>
+          <q-chip dense size="md" square>
             <q-avatar color="red" text-color="white">
               {{game.players[i].won}}
             </q-avatar>
-            Won
-          </q-chip>
-          <q-chip size="sm" square>
-            <q-avatar color="red" text-color="white">
-              {{game.players[i].lost}}
-            </q-avatar>
-            Lost
+            <span class="text-caption">
+              Won
+            </span>
           </q-chip>
         </div>
       </div>

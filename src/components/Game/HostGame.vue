@@ -11,10 +11,14 @@
       </q-btn>
     </q-bar>
 
-    <q-card-section>
+    <q-card-section class="text-center" v-if="loading">
+      <loading />
+    </q-card-section>
+
+    <q-card-section v-if="!loading">
       <div class="text-h6">Create a game</div>
     </q-card-section>
-    <q-card-section class="q-pa-xs q-ma-xs">
+    <q-card-section v-if="!loading" class="q-pa-xs q-ma-xs">
       <div class="text-caption q-ml-sm text-secondary">Name of game</div>
       <q-input
         class="q-ma-xs q-mb-none text-white"
@@ -30,9 +34,10 @@
       />
     </q-card-section>
 
-    <q-card-section class="q-pa-xs q-ma-xs">
+    <q-card-section v-if="!loading" class="q-pa-xs q-ma-xs">
       <div class="text-caption q-ml-sm text-secondary">No of players</div>
       <q-btn-toggle
+        spread
         v-model="game.totalPlayers"
         class="my-custom-toggle"
         no-caps
@@ -49,7 +54,20 @@
       />
     </q-card-section>
 
-    <q-card-section class="q-pa-xs q-ma-xs">
+    <q-card-section v-if="!loading" class="q-pa-xs q-mx-xs q-px-md">
+      <q-badge color="secondary">
+        Points to stake : {{game.stake}}
+      </q-badge>
+      <q-slider
+        v-model="game.stake"
+        color="secondary"
+        :min="0"
+        :step="50"
+        :max="whotUserDetails.points"
+      />
+    </q-card-section>
+
+    <q-card-section v-if="!loading" class="q-pa-xs q-ma-xs">
       <div class="text-caption q-ml-sm text-secondary">How many cards each</div>
       <q-btn-toggle
         v-model="game.noOfCards"
@@ -69,9 +87,10 @@
         ]"
       />
     </q-card-section>
-    <q-card-section class="q-pa-xs q-ma-xs">
+    <q-card-section v-if="!loading" class="q-pa-xs q-ma-xs">
       <div class="text-caption q-ml-sm text-secondary">Pick two for mistakes?</div>
       <q-btn-toggle
+        spread
         v-model="game.mistakes"
         class="my-custom-toggle"
         no-caps
@@ -86,26 +105,10 @@
         ]"
       />
     </q-card-section>
-    <q-card-section class="q-pa-xs q-ma-xs">
-      <div class="text-caption q-ml-sm text-secondary">Winner or highest number out</div>
-      <q-btn-toggle
-        v-model="game.mode"
-        class="my-custom-toggle"
-        no-caps
-        rounded
-        unelevated
-        toggle-color="secondary"
-        color="white"
-        text-color="primary"
-        :options="[
-          {label: 'Normal', value: 'normal'},
-          {label: 'Tournament', value: 'tournament'}
-        ]"
-      />
-    </q-card-section>
-    <q-card-section class="q-pa-xs q-ma-xs">
+    <q-card-section v-if="!loading" class="q-pa-xs q-ma-xs">
       <div class="text-caption q-ml-sm text-secondary">Game open for anyone to join</div>
       <q-btn-toggle
+        spread
         v-model="game.private"
         class="my-custom-toggle"
         no-caps
@@ -120,25 +123,36 @@
         ]"
       />
     </q-card-section>
-    <q-card-actions align="right">
+    <q-card-actions v-if="!loading" align="right">
       <q-btn @click="submitHostGame" unelevated rounded color="secondary" label="Create" />
     </q-card-actions>
   </q-card>
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
 export default {
   data: () => ({
+    loading: false,
+    whotUserDetails: {},
     game: {
       name: "",
       mistakes: true,
-      mode: "normal",
+      mode: "hno",
       private: false,
       totalPlayers: 2,
       noOfCards: 4,
+      stake: 0
     }
   }),
+  computed: {
+    ...mapGetters("users", ["whotUser"])
+  },
+  components: {
+    loading: () => import("../Universal/Loading")
+  },
   methods: {
+    ...mapActions("users", ["fetchUserDetails", "logout"]),
     submitHostGame() {
       this.$refs.name.validate();
 
@@ -148,10 +162,28 @@ export default {
     },
     hostNewGame() {
       this.$root.$emit("hostNewGame", this.game);
+    },
+    fetchProfile() {
+      this.loading = true
+      
+      this.fetchUserDetails()
+      .then(whotUser => {
+        this.whotUserDetails = whotUser
+        this.loading = false
+      })
+      .catch(() => {
+        this.loading = false
+        this.logout().then(() => {
+          this.$router.push("/");
+        });
+        // this.$emit("closeDialog")
+        // Stop loading & show error
+      })
     }
   },
   mounted() {
     this.$refs.name.focus();
+    this.fetchProfile()
   }
 };
 </script>

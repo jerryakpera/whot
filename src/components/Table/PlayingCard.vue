@@ -4,10 +4,10 @@
           <div style="cursor: pointer; width: 100%" class="card">
             <div>
               <div class="no">{{whotGame.playingCard.no}}</div>
-                <q-badge color="primary value" text-color="white" :label="whotGame.playingCard.value" class="cardValue" />
+                <q-badge color="value" text-color="white" :label="whotGame.playingCard.value" class="cardValue value" />
                 <div class="shape text-center" :class="whotGame.playingCard.shape"></div>
                 <div class="text-right bottom">
-                  <q-badge color="primary value value-bottom" text-color="white" :label="whotGame.playingCard.value" />
+                  <q-badge color="value value-bottom" class="value" text-color="white" :label="whotGame.playingCard.value" />
                 <div class="num text-right">{{whotGame.playingCard.no}}</div>
               </div>
             </div>
@@ -95,6 +95,7 @@ export default {
         margin: 0;
         position: relative;
         top: -8px;
+        background-color: brown;
 
         &.value-bottom {
           top: 8px;

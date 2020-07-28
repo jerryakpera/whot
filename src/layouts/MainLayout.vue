@@ -24,16 +24,6 @@
             class="q-ml-md"
             unelevated
           >
-            <!-- <q-menu v-if="!isLoggedIn" fit>
-              <q-list style="min-width: 155px">
-                <q-item @click="loginDialog = true" clickable>
-                  <q-item-section>Sign in</q-item-section>
-                </q-item>
-                <q-item @click="registerDialog = true" clickable>
-                  <q-item-section>Register</q-item-section>
-                </q-item>
-              </q-list>
-            </q-menu> -->
             <q-menu v-if="isLoggedIn" fit>
               <q-list style="min-width: 155px">
                 <q-item dense @click="profileDialog = true" clickable>
@@ -158,6 +148,7 @@ export default {
         id: this.whotUser.userID,
         name: this.whotUser.username,
         played: this.whotUser.played,
+        points: this.whotUser.points,
         won: this.whotUser.won,
         lost: this.whotUser.lost
       };
@@ -182,21 +173,22 @@ export default {
     });
 
     // Join a game
-    this.$root.$on("joinGame", gameID => {
+    this.$root.$on("joinGame", data => {
       const player = {
-        id: this.whotUser.userID,
-        name: this.whotUser.username,
-        played: this.whotUser.played,
-        won: this.whotUser.won,
-        lost: this.whotUser.lost
+        id: data.whotUser.userID,
+        name: data.whotUser.username,
+        played: data.whotUser.played,
+        points: data.whotUser.points,
+        won: data.whotUser.won,
+        lost: data.whotUser.lost
       };
 
-      const data = {
+      const sendData = {
         player,
-        gameID
+        gameID: data.gameID
       }
 
-      this.socket.emit("joinGame", data)
+      this.socket.emit("joinGame", sendData)
     })
 
     // Player joined game
@@ -334,6 +326,10 @@ export default {
       this.showNotif(showMessage)
     })
 
+    this.$root.$on("showBasicNotification", message => {
+      this.showNotif(message)
+    })
+
     this.socket.on("broadcastShout", gameShout => {
       this.showNotif(`${gameShout.playerName} LAST CARD`)
     })
@@ -352,6 +348,10 @@ export default {
         playerID: this.currentPlayer.id,
       }
       this.socket.emit("shoutLastCard", shout)
+    })
+
+    this.socket.on("solid", () => {
+      console.log("SOLID")
     })
   },
   created() {

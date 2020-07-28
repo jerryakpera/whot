@@ -8,7 +8,9 @@ function encryptObj(obj) {
 }
 
 function decryptObj(obj) {
-  return JSON.parse(base64.decode(obj));
+  return new Promise((resolve, reject) => {
+    resolve(JSON.parse(base64.decode(obj)))
+  })
 }
 
 function checkUserTurn(currentUser, playerName) {

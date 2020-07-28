@@ -3,7 +3,8 @@ const _ = require("../../services/utils/utils");
 
 const state = {
   isLoggedIn: false,
-  user: {}
+  user: {},
+  profile: {}
 };
 
 const getters = {
@@ -117,6 +118,37 @@ const actions = {
       commit("setLoggedIn", true)
       resolve()
     });
+  },
+  fetchUserDetails({commit}) {
+    return new Promise((resolve, reject) => {
+      
+      if (_.storage.get("whotUserData")) {
+        let options = {}
+        const storageObj = _.storage.get("whotUserData")
+        
+        _.decryptObj(storageObj)
+        .then(whotUserData => {
+          options.headers = {
+            "Authorization": whotUserData.accessToken
+          }
+          const userEmail = whotUserData.email
+    
+          whotAxios.post("/auth/details", {email: userEmail}, options)
+          .then(data => {
+            // Resolve with profile
+            if (data.data.status !== 200) reject()
+            
+            commit("setUser", data.data.data);
+            resolve(data.data.data)
+          })
+          .catch(err => {
+            // Reject with err and display err
+            reject()
+          })
+        })
+      }
+
+    })
   }
 };
 

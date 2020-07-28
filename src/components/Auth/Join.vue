@@ -1,97 +1,97 @@
 <template>
-    <div>
-        <q-card-section class="text-center" v-if="loading">
-            <loading />
-        </q-card-section>
+  <div>
+    <q-card-section class="text-center" v-if="loading">
+        <loading />
+    </q-card-section>
 
-        <q-card-section v-if="!loading">
-            <form @submit.prevent="submitRegisterForm">
-                <q-input
-                class="q-ma-xs text-white"
-                bg-color="white"
-                filled
-                v-model="user.username"
-                placeholder="username"
-                dense
-                ref="username"
-                :rules="[val => !!val || 'required']"
-                lazy-rules
-                >
-                <template v-slot:prepend>
-                    <q-icon size="xs" name="person" />
-                </template>
-                </q-input>
-                <q-input
-                class="q-ma-xs"
-                bg-color="white"
-                filled
-                v-model="user.email"
-                dense
-                placeholder="email"
-                ref="email"
-                :rules="[val => !!val || 'Valid email required', isValidEmail(),]"
-                lazy-rules
-                >
-                <template v-slot:prepend>
-                    <q-icon size="xs" name="alternate_email" />
-                </template>
-                </q-input>
-                <q-input
-                class="q-ma-xs"
-                bg-color="white"
-                filled
-                v-model="user.password"
-                :type="!isPassword ? 'password' : 'text'"
-                placeholder="password"
-                ref="password"
-                :rules="[ val => val.length >= 6 || 'Must be at least 6 characters']"
-                dense
-                lazy-rules
-                >
-                <template v-slot:prepend>
-                    <q-icon size="xs" name="vpn_key" />
-                </template>
-                <template v-slot:append>
-                    <q-icon
-                    size="xs"
-                    class="cursor-pointer text-blue-10"
-                    :name="isPassword ? 'visibility_off' : 'visibility'"
-                    v-on:click="isPassword = !isPassword"
-                    ></q-icon>
-                </template>
-                </q-input>
-                <q-input
-                class="q-ma-xs"
-                bg-color="white"
-                :type="!isConfirmPassword ? 'password' : 'text'"
-                filled
-                dense
-                v-model="user.confirmpassword"
-                placeholder="confirm password"
-                ref="confirmpassword"
-                :rules="passwordsMatch"
-                lazy-rules
-                @keyup.enter="submitRegisterForm"
-                >
-                <template v-slot:prepend>
-                    <q-icon size="xs" name="vpn_key" />
-                </template>
-                <template v-slot:append>
-                    <q-icon
-                    size="xs"
-                    class="cursor-pointer text-blue-10"
-                    :name="isConfirmPassword ? 'visibility_off' : 'visibility'"
-                    v-on:click="isConfirmPassword = !isConfirmPassword"
-                    ></q-icon>
-                </template>
-                </q-input>
-            </form>
-        </q-card-section>
+    <q-card-section v-if="!loading">
+        <form @submit.prevent="submitRegisterForm">
+            <q-input
+            class="q-ma-xs text-white"
+            bg-color="white"
+            filled
+            v-model="user.username"
+            placeholder="username"
+            dense
+            ref="username"
+            :rules="[val => !!val || 'required']"
+            lazy-rules
+            >
+            <template v-slot:prepend>
+                <q-icon size="xs" name="person" />
+            </template>
+            </q-input>
+            <q-input
+            class="q-ma-xs"
+            bg-color="white"
+            filled
+            v-model="user.email"
+            dense
+            placeholder="email"
+            ref="email"
+            :rules="[val => !!val || 'Valid email required', isValidEmail(),]"
+            lazy-rules
+            >
+            <template v-slot:prepend>
+                <q-icon size="xs" name="alternate_email" />
+            </template>
+            </q-input>
+            <q-input
+            class="q-ma-xs"
+            bg-color="white"
+            filled
+            v-model="user.password"
+            :type="!isPassword ? 'password' : 'text'"
+            placeholder="password"
+            ref="password"
+            :rules="[ val => val.length >= 6 || 'Must be at least 6 characters']"
+            dense
+            lazy-rules
+            >
+            <template v-slot:prepend>
+                <q-icon size="xs" name="vpn_key" />
+            </template>
+            <template v-slot:append>
+                <q-icon
+                size="xs"
+                class="cursor-pointer text-blue-10"
+                :name="isPassword ? 'visibility_off' : 'visibility'"
+                v-on:click="isPassword = !isPassword"
+                ></q-icon>
+            </template>
+            </q-input>
+            <q-input
+            class="q-ma-xs"
+            bg-color="white"
+            :type="!isConfirmPassword ? 'password' : 'text'"
+            filled
+            dense
+            v-model="user.confirmpassword"
+            placeholder="confirm password"
+            ref="confirmpassword"
+            :rules="passwordsMatch"
+            lazy-rules
+            @keyup.enter="submitRegisterForm"
+            >
+            <template v-slot:prepend>
+                <q-icon size="xs" name="vpn_key" />
+            </template>
+            <template v-slot:append>
+                <q-icon
+                size="xs"
+                class="cursor-pointer text-blue-10"
+                :name="isConfirmPassword ? 'visibility_off' : 'visibility'"
+                v-on:click="isConfirmPassword = !isConfirmPassword"
+                ></q-icon>
+            </template>
+            </q-input>
+        </form>
+    </q-card-section>
 
-        <q-card-actions align="right" class="bg-white text-teal">
-            <q-btn @click="submitRegisterForm" class="q-mr-md" unelevated color="blue-6" label="Join" />
-        </q-card-actions>
-    </div>
+    <q-card-actions align="right" class="bg-white text-teal">
+        <q-btn @click="submitRegisterForm" class="q-mr-md" unelevated color="blue-6" label="Join" />
+    </q-card-actions>
+  </div>
 </template>
 
 <script>
@@ -153,6 +153,7 @@ export default {
         .then(data => {
           this.loading = false;
           this.showNotif("Your profile has been created");
+          
           this.$emit("closeDialog");
           this.$router.push("/onboarding");
         })

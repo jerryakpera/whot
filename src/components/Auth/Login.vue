@@ -99,14 +99,15 @@ export default {
         signUserIn() {
             this.logUserIn(this.user)
             .then(data => {
-            this.loading = false;
-            this.showNotif("Logged in");
-            this.$emit("closeDialog");
-            this.$router.push("/lobby");
+                this.loading = false;
+                this.showNotif("Logged in");
+                
+                this.$emit("closeDialog");
+                this.$router.push("/lobby");
             })
             .catch(err => {
-            this.loading = false;
-            this.showNotif(err.message, "negative");
+                this.loading = false;
+                this.showNotif(err.message, "negative");
             });
         }
     },
