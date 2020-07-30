@@ -11,7 +11,7 @@
       >
         <q-item @click="joinGame(game)" v-for="game in games" :key="game.id" clickable v-ripple>
           <q-item-section>
-            <q-item-label>{{game.name}} ({{game.stake}}) </q-item-label>
+            <q-item-label>{{game.name}}</q-item-label>
             <q-item-label>
               <q-rating
                 :max="game.totalPlayers"
@@ -64,14 +64,12 @@ export default {
     ...mapActions("users", ["fetchUserDetails", "logout"]),
     joinGame(game) {
       this.loading = true
-
-
+      if (game.activePlayers === game.totalPlayers) {
+        this.$root.$emit("showBasicNotification", "This game is already full.")
+        return
+      }
       this.fetchProfile()
       .then(whotUser => {
-        if (game.stake > whotUser.points) {
-          this.$root.$emit("showBasicNotification", "Insufficient points")
-          return
-        }
         const data = {
           whotUser,
           gameID: game.id

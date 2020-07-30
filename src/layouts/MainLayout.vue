@@ -148,7 +148,6 @@ export default {
         id: this.whotUser.userID,
         name: this.whotUser.username,
         played: this.whotUser.played,
-        points: this.whotUser.points,
         won: this.whotUser.won,
         lost: this.whotUser.lost
       };
@@ -178,7 +177,6 @@ export default {
         id: data.whotUser.userID,
         name: data.whotUser.username,
         played: data.whotUser.played,
-        points: data.whotUser.points,
         won: data.whotUser.won,
         lost: data.whotUser.lost
       };
@@ -255,7 +253,11 @@ export default {
     })
 
     this.socket.on("gameOver", game => {
-      this.$root.$emit("gameOver")
+      this.updateGame(game)
+      .then(() => {
+        this.$root.$emit("refreshGameBoard")
+        this.$root.$emit("gameOver")
+      })
     })
 
     this.socket.on("selectShape", game => {
@@ -314,11 +316,13 @@ export default {
     })
 
     this.$root.$on("sendMessage", message => {
-      const newMessage = {
+      const sendMsg = {
         player: this.whotUser.username,
-        message
+        gameID: this.whotGame.game.id,
+        message,
       }
-      this.socket.emit("sendMessage", newMessage)
+
+      this.socket.emit("sendMessage", sendMsg)
     })
 
     this.socket.on("receiveMsg", message => {

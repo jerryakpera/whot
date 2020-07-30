@@ -75,12 +75,8 @@
                 </div>
             </div>
         </q-card-section>
-        <q-dialog v-model="gameOverDialog">
-            <q-card>
-                <q-card-section>
-                    <div class="text-h6">Game Over</div>
-                </q-card-section>
-            </q-card>
+        <q-dialog persistent v-model="gameOverDialog">
+            <gameoverdialog :gameScores="whotGame.scoreCard" />
         </q-dialog>
     </q-card>
 </template>
@@ -103,6 +99,7 @@ export default {
         playersbox: () => import("../../player/PlayersBox"),
         gametable: () => import("../../Table/GameTable"),
         gamescores: () => import("./GameScores"),
+        gameoverdialog: () => import("./GameOver")
     },
     methods: {
         ...mapActions("game", ["updateSound"]),

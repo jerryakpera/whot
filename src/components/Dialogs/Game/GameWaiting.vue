@@ -2,7 +2,6 @@
   <q-card :key="componentKey" style="width: 250px;">
     <q-card-section class="bg-primary text-white q-mb-none">
       <div class="text-h6">{{game.game.name}}</div>
-      <q-icon size="xs" color="white" name="score" /> {{game.game.stake}}
       <div v-if="!game.game.private" class="text-caption">(waiting)</div>
       <div v-else>
         <div class="text-body1"> {{game.game.id}} </div>
@@ -26,9 +25,6 @@
           <div v-if="game.players[i]" class="text-subtitle2 text-positive">
             {{ game.players[i].name }}
             <br />
-            <span :class="game.players[i].points > 750 ? 'green-10' : game.players[i].points > 500 ? 'blue-5' : 'red-10'">
-              {{ game.players[i].points }}
-            </span>
           </div>
           <div v-else class="text-subtitle2 text-black">
             Player {{ i + 1 }}
@@ -36,13 +32,11 @@
         </div>
         <div v-if="game.players[i]" class="col-6">
           <q-chip dense size="md" square>
-            <q-avatar color="red" text-color="white">
-              <span class="text-caption" style="font-size: 0.7em">
-                {{game.players[i].points}}
-              </span>
+            <q-avatar color="blue-3" text-color="white">
+              {{game.players[i].played}}
             </q-avatar>
             <span class="text-caption">
-              Points
+              Played
             </span>
           </q-chip>
           <q-chip dense size="md" square>

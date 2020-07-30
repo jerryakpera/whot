@@ -15,13 +15,10 @@
       <loading />
     </q-card-section>
 
-    <q-card-section v-if="!loading">
-      <div class="text-h6">Create a game</div>
-    </q-card-section>
     <q-card-section v-if="!loading" class="q-pa-xs q-ma-xs">
+      <div class="text-subtitle2 q-mb-xs">Create a game</div>
       <div class="text-caption q-ml-sm text-secondary">Name of game</div>
       <q-input
-        class="q-ma-xs q-mb-none text-white"
         bg-color="white"
         filled
         v-model="game.name"
@@ -33,7 +30,6 @@
         @keyup.enter="submitHostGame"
       />
     </q-card-section>
-
     <q-card-section v-if="!loading" class="q-pa-xs q-ma-xs">
       <div class="text-caption q-ml-sm text-secondary">No of players</div>
       <q-btn-toggle
@@ -51,19 +47,6 @@
           {label: '3', value: 3},
           {label: '4', value: 4}
         ]"
-      />
-    </q-card-section>
-
-    <q-card-section v-if="!loading" class="q-pa-xs q-mx-xs q-px-md">
-      <q-badge color="secondary">
-        Points to stake : {{game.stake}}
-      </q-badge>
-      <q-slider
-        v-model="game.stake"
-        color="secondary"
-        :min="0"
-        :step="50"
-        :max="whotUserDetails.points"
       />
     </q-card-section>
 
@@ -141,8 +124,7 @@ export default {
       mode: "hno",
       private: false,
       totalPlayers: 2,
-      noOfCards: 4,
-      stake: 0
+      noOfCards: 4
     }
   }),
   computed: {
