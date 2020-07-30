@@ -1,46 +1,55 @@
 <template>
   <div class="flex flex-center">
-    <q-card class="q-mt-sm q-pa-md my-card" style="width: 350px">
+      <loading class="q-mt-lg" v-if="loading" />
+    <q-card v-if="loading">
+    </q-card>
+    <q-card class="q-mt-sm q-pa-md my-card" style="width: 350px" v-if="!loading">
       <q-card-section>
         <q-btn-group spread flat rounded>
-          <q-btn dense :label="whotUser.played" icon="donut_large" color="secondary" />
-          <q-btn dense :label="whotUser.won" icon="emoji_events" color="positive" />
-          <q-btn dense :label="whotUser.lost" icon="thumb_down_alt" color="negative" />
+          <q-btn size="sm" :label="whotUserDetails.played" icon="donut_large" color="secondary" />
+          <q-btn size="sm" :label="whotUserDetails.won" icon="emoji_events" color="positive" />
+          <q-btn size="sm" :label="whotUserDetails.lost" icon="thumb_down_alt" color="negative" />
         </q-btn-group>
-      </q-card-section>
-      <q-card-section class="bg-white q-pa-xs">
         <q-btn
           @click="hostGameDialog = true"
+          class="q-mt-sm"
           icon="games"
+          size="sm"
+          style="width: 100%"
           unelevated
           rounded
           color="primary"
-          label="Host Game"
+          label="Create New Game"
         />
       </q-card-section>
-
       <q-card-section>
         <q-btn
-          icon="refresh"
-          round
-          class="bg-secondary text-white"
-          size="sm"
-          unelevated
           @click="refreshOpenGames"
+          icon="refresh"
+          size="sm"
+          style="width: 100%"
+          unelevated
+          rounded
+          class="bg-secondary text-white"
+          label="Refresh Game List"
         />
-        <div class="text-h5 q-mt-sm q-mb-xs">Open Games</div>
-      </q-card-section>
-
-      <q-card-section>
-        <gamelist :games="openGames"/>
+        <gamelist class="q-mt-sm" :games="openGames"/>
       </q-card-section>
 
       <q-separator dark />
 
-      <q-card-actions>
-        <!-- Opens dialog and requests for gameID -->
-        <q-btn @click="privateGameDialog = true" color="primary" label="Join Private Game" />
-      </q-card-actions>
+      <q-card-section>
+        <q-btn
+          @click="privateGameDialog = true" 
+          icon="login"
+          size="sm"
+          style="width: 100%"
+          unelevated
+          rounded
+          color="green-8" 
+          label="Join Private Game" 
+        />
+      </q-card-section>
     </q-card>
     <q-dialog
       v-model="hostGameDialog"
@@ -69,14 +78,16 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   data: () => ({
+    loading: true,
     gameDialog: false,
     hostGameDialog: false,
     gameWaitingDialog: false,
     privateGameDialog: false,
+    whotUserDetails: {}
   }),
   computed: {
     ...mapGetters("game", ["whotGame", "openGames"]),
@@ -88,8 +99,25 @@ export default {
     gamewaiting: () => import("../components/Dialogs/Game/GameWaiting"),
     privategame: () => import("../components/Dialogs/Game/PrivateGame"),
     gamedialog: () => import("../components/Dialogs/Game/GameDialog"),
+    loading: () => import("../components/Universal/Loading")
   },
   methods: {
+    ...mapActions("users", ["fetchUserDetails", "logout"]),
+    fetchProfile() {
+      this.loading = true
+      
+      this.fetchUserDetails()
+      .then(whotUser => {
+        this.whotUserDetails = whotUser
+        this.loading = false
+      })
+      .catch(() => {
+        this.loading = false
+        this.logout().then(() => {
+          this.$router.push("/");
+        });
+      })
+    },
     refreshOpenGames() {
       this.$root.$emit("fetchOpenGames")
     },
@@ -115,6 +143,9 @@ export default {
     this.$root.$on("closeGameDialog", () => {
       this.gameDialog = false
     })
+  },
+  mounted() {
+    this.fetchProfile()
   }
 };
 </script>

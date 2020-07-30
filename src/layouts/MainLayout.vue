@@ -7,13 +7,22 @@
           <audio id="audio" src="../../public/sounds/notif1.mp3"></audio>
           <q-btn
             @click="showRulesDialog = true"
-            to="/"
             size="sm"
             icon="gavel"
             outline
             rounded
             color="secondary"
-            label="Rules!"
+            label="Rules"
+            class="q-mr-sm"
+          />
+          <q-btn
+            @click="showRankingDialog = true"
+            size="sm"
+            icon="format_list_numbered"
+            outline
+            rounded
+            color="secondary"
+            label="Rank"
             class="q-mr-sm"
           />
           <q-btn
@@ -50,6 +59,15 @@
     >
       <rulesdialog />
     </q-dialog>
+    <q-dialog
+      v-model="showRankingDialog"
+      persistent
+      maximized
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <rankingdialog />
+    </q-dialog>
     <q-dialog v-model="profileDialog">
       <profiledialog @closeDialog="closeProfile" />
     </q-dialog>
@@ -77,6 +95,7 @@ export default {
     whotDialog: false,
     profileDialog: false,
     showRulesDialog: false,
+    showRankingDialog: false,
     loginDialog: false,
     registerDialog: false,
     socket: {}
@@ -87,6 +106,7 @@ export default {
   },
   components: {
     profiledialog: () => import("../components/Dialogs/Profile/ProfileDialog"),
+    rankingdialog: () => import("../components/Rules/Ranking"),
     rulesdialog: () => import("../components/Rules/Rules"),
     logindialog: () => import("../components/Dialogs/Auth/LoginDialog"),
     whotdialog: () => import("../components/Dialogs/Game/WhotDialog"),
