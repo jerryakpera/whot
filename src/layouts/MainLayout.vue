@@ -374,8 +374,28 @@ export default {
       this.socket.emit("shoutLastCard", shout)
     })
 
+    this.$root.$on("rematchGame", () => {
+      console.log("Rematching Game!")
+      // Trigger rematch game with game object
+      this.socket.emit("rematch", this.whotGame)
+    })
+
     this.socket.on("solid", () => {
       console.log("SOLID")
+    })
+
+    this.socket.on("gameRestarting", () => {
+      this.$root.$emit("gameRestarting")
+    })
+
+    this.socket.on("gameRestartReady", whotGame => {
+      this.updateGame(whotGame)
+      .then(() => {
+        // if (this.whotSettings.sound) audio.play();
+        this.$$root.$emit("closeGameOverDialog")
+        this.$root.$emit("refreshGameBoard")
+        // this.showNotif(game.lastMove)
+      })
     })
   },
   created() {

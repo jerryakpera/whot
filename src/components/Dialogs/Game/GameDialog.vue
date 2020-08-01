@@ -76,7 +76,7 @@
             </div>
         </q-card-section>
         <q-dialog persistent v-model="gameOverDialog">
-            <gameoverdialog :gameScores="whotGame.scoreCard" />
+            <gameoverdialog :gameScores="whotGame.scoreCard" @closeDialog="closeGameOverDialog" />
         </q-dialog>
     </q-card>
 </template>
@@ -124,6 +124,9 @@ export default {
                 // console.log('I am triggered on both OK and Cancel')
             })
         },
+        closeGameOverDialog() {
+            this.gameOverDialog = false
+        }
     },
     mounted() {
         this.$root.$on("refreshGameBoard", () => {
@@ -136,6 +139,10 @@ export default {
 
         this.$root.$on("gameOver", () => {
             this.gameOverDialog = true
+        })
+
+        this.$root.$on("closeGameOverDialog", () => {
+            this.gameOverDialog = false
         })
     }
 }
